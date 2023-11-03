@@ -17,5 +17,6 @@ namespace shipping_tracking.Models
         public DbSet<Product> Products { get; set; }
         public DbSet<OrderItem> OrderItems { get; set; }
         public DbSet<Payment> Payments { get; set; }
+        public DbSet<Shipping> Shippings { get; set; }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using shipping_tracking.Models;
 
@@ -11,9 +12,11 @@ using shipping_tracking.Models;
 namespace shipping_tracking.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231103192204_createShippingModel")]
+    partial class createShippingModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -258,42 +261,6 @@ namespace shipping_tracking.Migrations
                     b.ToTable("RolePermissions");
                 });
 
-            modelBuilder.Entity("shipping_tracking.Models.Shipping", b =>
-                {
-                    b.Property<int>("ShippingID")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ShippingID"));
-
-                    b.Property<DateTime?>("EstimatedDeliveryDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("IsDeleted")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderID")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ShippingAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShippingStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShippingTrackingNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ShippingID");
-
-                    b.HasIndex("OrderID");
-
-                    b.ToTable("Shippings");
-                });
-
             modelBuilder.Entity("shipping_tracking.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -411,17 +378,6 @@ namespace shipping_tracking.Migrations
                     b.Navigation("Permission");
 
                     b.Navigation("Role");
-                });
-
-            modelBuilder.Entity("shipping_tracking.Models.Shipping", b =>
-                {
-                    b.HasOne("shipping_tracking.Models.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Order");
                 });
 
             modelBuilder.Entity("shipping_tracking.Models.User", b =>
