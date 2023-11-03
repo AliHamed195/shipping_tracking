@@ -12,5 +12,6 @@ namespace shipping_tracking.Models
         public DbSet<Role> Roles { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<RolePermission> RolePermissions { get; set; }
+        public DbSet<Order> Orders { get; set; }
     }
 }
