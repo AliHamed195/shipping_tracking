@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using shipping_tracking.BackEnd.Interfaces;
 using shipping_tracking.BackEnd.Repositories;
 using shipping_tracking.Models;
+using User_tracking.BackEnd.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
