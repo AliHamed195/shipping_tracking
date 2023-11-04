@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using shipping_tracking.BackEnd.Interfaces;
+using shipping_tracking.BackEnd.Repositories;
 using shipping_tracking.Models;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +14,15 @@ var provider = builder.Services.BuildServiceProvider();
 var configuration = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<MyDbContext>(item => item.UseSqlServer(configuration.GetConnectionString("myconn")));
 
+
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IOrderItemRepository, OrderItemRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IShippingRepository, ShippingRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
 
 var app = builder.Build();
 
