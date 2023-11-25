@@ -1,0 +1,49 @@
+﻿@model shipping_tracking.Models.Category
+
+
+<h1>Update Category</h1>
+
+<h4>Category</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="UpdateCategory">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="CategoryID" />
+            <div class="form-group">
+                <label asp-for="CategoryName" class="control-label"></label>
+                <input asp-for="CategoryName" class="form-control" />
+                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+@if (ViewBag.ExceptionError != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                position: 'top-end',
+                title: 'Oops!!',
+                text: '@ViewBag.ExceptionError',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+    </script>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

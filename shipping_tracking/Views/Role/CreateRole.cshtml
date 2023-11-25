@@ -1,0 +1,106 @@
+﻿@model shipping_tracking.Models.ViewModels.RolePermissionViewModel
+
+<style>
+    .table-hover tbody tr:hover {
+        background-color: #f5f5f5;
+    }
+
+    .thead-dark th {
+        background-color: #343a40;
+        color: white;
+    }
+</style>
+
+@Html.AntiForgeryToken()
+
+<h2>Create Role</h2>
+
+<form>
+    <div class="form-group">
+        <label asp-for="Role.Name" class="control-label"></label>
+        <input id="rolename" asp-for="Role.Name" class="form-control" />
+        <span asp-validation-for="Role.Name" class="text-danger"></span>
+    </div>
+
+    <div class="form-group mt-3">
+        <h3>Permissions:</h3>
+        <table class="table table-hover">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Permission Name</th>
+                    @foreach (var actionType in Model.Permissions.Select(p => p.ActionType).Distinct())
+                    {
+                        <th scope="col">@actionType</th>
+                    }
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var permissionGroup in Model.Permissions.GroupBy(p => p.Name))
+                {
+                    <tr>
+                        <th scope="row">@permissionGroup.Key</th>
+                        @foreach (var actionType in Model.Permissions.Select(p => p.ActionType).Distinct())
+                        {
+                            var permission = permissionGroup.FirstOrDefault(pg => pg.ActionType == actionType);
+                            <td>
+                                @if (permission != null)
+                                {
+                                    <input type="checkbox" name="permissionIds" value="@permission.Id" @(permission.IsChecked ? "checked" : "") />
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="form-group">
+        <input id="submit" type="submit" value="Create" class="btn btn-primary" />
+    </div>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+<script>
+    const submitBtn = document.getElementById('submit');
+    submitBtn.addEventListener('click', function (event) {
+        event.preventDefault();
+
+        const roleName = document.getElementById('rolename').value;
+        const checkedPermissions = Array.from(document.querySelectorAll('input[name="permissionIds"]:checked')).map(cb => cb.value);
+
+        fetch('/Role/Create', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'RequestVerificationToken': document.querySelector('input[name="__RequestVerificationToken"]').value
+            },
+            body: JSON.stringify({ roleName: roleName, permissionIds: checkedPermissions }),
+            credentials: 'include'
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    console.log('Success:', data);
+                    window.location.href = data.redirectUrl; // Redirect to the URL provided by the server
+                } else {
+                    console.error('Error:', data.message);
+                    // Display error message to the user
+                }
+            })
+            .catch(error => {
+                console.error('Fetch Error:', error);
+                // Handle errors here, including displaying a message to the user
+            });
+    });
+</script>

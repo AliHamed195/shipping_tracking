@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace shipping_tracking.Models
 {
@@ -14,6 +15,9 @@ namespace shipping_tracking.Models
         [Required]
         [StringLength(256)]
         public string ActionType { get; set; }
+
+        [NotMapped] 
+        public bool IsChecked { get; set; }
 
         // Permission have many Roles
         public ICollection<RolePermission> RolePermissions { get; set; }
