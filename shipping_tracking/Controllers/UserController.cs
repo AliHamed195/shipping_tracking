@@ -231,6 +231,77 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /User/Details/{id}
+        /// Retrieves details of a specific user by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> DetailsUser(int id)
+        {
 
+            try
+            {
+                var user  = await _dbContext.Users
+                    .Include(p => p.Role)
+                    .FirstOrDefaultAsync(c => c.Id == id && c.isDeleted == false);
+
+                if (user is null)
+                {
+                    user = new User();
+                    ViewBag.ExceptionError = "An error occurred while getting the user. Please try again later.";
+                }
+
+                return View(user);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details
+                _logger.LogError(exception: ex, message: "An error occurred while getting the User.");
+                ViewBag.ExceptionError = "An error occurred while getting the User. Please try again later.";
+                return View(new User());
+            }
+        }
+
+        /// <summary>
+        /// POST: /User/Delete/{id}
+        /// Marks a user as deleted in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("Delete/{id}")]
+        public async Task<JsonResult> DeleteUser(int id)
+        {
+            try
+            {
+                var user = await _dbContext.Users
+                    .FirstOrDefaultAsync(c => c.Id == id && c.isDeleted == false);
+
+                if (user is null)
+                {
+                    return Json(new { success = false, message = "user not found." });
+                }
+
+                user.isDeleted = true;
+                int result = await _dbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return Json(new { success = true, message = "user deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "An error occurred while deleting the user." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here
+                _logger.LogError(exception: ex, message: "An error occurred while deleting the user.");
+
+                return Json(new { success = false, message = "An error occurred while deleting the user. Please try again later." });
+            }
+        }
     }
 }

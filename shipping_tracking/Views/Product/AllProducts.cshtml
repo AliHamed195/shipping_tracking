@@ -52,7 +52,7 @@
                 <td>
                     <a asp-action="UpdateProduct" asp-route-id="@item.ProductID">Edit</a> |
                     <a asp-action="DetailsProduct" asp-route-id="@item.ProductID">Details</a> |
-                    <a onclick="deleteCategory(@item.ProductID)">Delete</a>
+                    <a onclick="deleteProduct(@item.ProductID)">Delete</a>
                 </td>
             </tr>
         }
@@ -97,7 +97,7 @@
 }
 
 <script>
-    function deleteCategory(id) {
+    function deleteProduct(id) {
         Swal.fire({
             title: 'Are you sure?',
             text: 'You will not be able to recover this product!',
