@@ -10,6 +10,11 @@ namespace shipping_tracking.Controllers
         private readonly MyDbContext _dbContext;
         private readonly ILogger<CategoryController> _logger;
 
+        /// <summary>
+        /// Constructor: Initializes the controller with database context and logger
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="logger"></param>
         public CategoryController(MyDbContext dbContext, ILogger<CategoryController> logger)
         {
             _dbContext = dbContext;
@@ -17,6 +22,11 @@ namespace shipping_tracking.Controllers
         }
 
 
+        /// <summary>
+        /// GET: /Category/All
+        /// Retrieves all non-deleted categories and displays them in a view
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("All")]
         public async Task<IActionResult> AllCategories()
         {
@@ -36,12 +46,23 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /Category/Create
+        /// Returns a view for creating a new category
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Create")]
         public IActionResult CreateCategory()
         {
             return View();
         }
 
+        /// <summary>
+        /// POST: /Category/Create
+        /// Validates and adds a new category to the database
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateCategory(Category category)
@@ -81,7 +102,12 @@ namespace shipping_tracking.Controllers
             }
         }
 
-
+        /// <summary>
+        /// GET: /Category/Update/{id}
+        /// Retrieves a category by ID for updating
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Update/{id}")]
         public async Task<IActionResult> UpdateCategory(int id)
         {
@@ -107,6 +133,13 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// POST: /Category/Update/{id}
+        /// Validates and updates a category in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="category"></param>
+        /// <returns></returns>
         [HttpPost("Update/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateCategory(int id, Category category)
@@ -160,6 +193,12 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /Category/Details/{id}
+        /// Retrieves details of a specific category by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> DetailsCategory(int id)
         {
@@ -185,6 +224,13 @@ namespace shipping_tracking.Controllers
                 return View(new Category());
             }
         }
+
+        /// <summary>
+        /// POST: /Category/Delete/{id}
+        /// Marks a category as deleted in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost("Delete/{id}")]
         public async Task<JsonResult> DeleteCategory(int id)
         {
