@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
+using shipping_tracking.Services.Interfaces;
+using shipping_tracking.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +14,8 @@ var provider = builder.Services.BuildServiceProvider();
 var configuration = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<MyDbContext>(item => item.UseSqlServer(configuration.GetConnectionString("myconn")));
 
+// Services & Repositories
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 var app = builder.Build();
 

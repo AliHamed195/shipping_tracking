@@ -34,10 +34,10 @@ namespace shipping_tracking.Controllers
             try
             {
                 var products = await _dbContext.Products
-                    .Where(c => c.IsDeleted == false)
-                    .Include(p => p.Category)
-                    .ToListAsync()
-                    ?? Enumerable.Empty<Product>();
+                                               .Where(c => c.IsDeleted == false)
+                                               .Include(p => p.Category)
+                                               .ToListAsync()
+                                               ?? Enumerable.Empty<Product>();
 
                 return View(products);
             }
@@ -59,11 +59,11 @@ namespace shipping_tracking.Controllers
             try
             {
                 var categories = await _dbContext.Categories
-                    .Where(c => c.IsDeleted == false)
-                    .ToListAsync()
-                    ?? Enumerable.Empty<Category>();
+                                                .Where(c => c.IsDeleted == false)
+                                                .ToListAsync()
+                                                ?? Enumerable.Empty<Category>();
 
-                if (categories is null)
+                if (categories.Count() == 0)
                 {
                     TempData["ExceptionError"] = "An error occurred while getting all categories.";
                 }
@@ -97,11 +97,11 @@ namespace shipping_tracking.Controllers
             try
             {
                 var categories = await _dbContext.Categories
-                    .Where(c => c.IsDeleted == false)
-                    .ToListAsync()
-                    ?? Enumerable.Empty<Category>();
+                                                .Where(c => c.IsDeleted == false)
+                                                .ToListAsync()
+                                                ?? Enumerable.Empty<Category>();
 
-                if (categories is null)
+                if (categories.Count() == 0)
                 {
                     TempData["ExceptionError"] = "An error occurred while getting all categories.";
                 }
@@ -186,11 +186,11 @@ namespace shipping_tracking.Controllers
                 }
 
                 var categories = await _dbContext.Categories
-                    .Where(c => c.IsDeleted == false)
-                    .ToListAsync()
-                    ?? Enumerable.Empty<Category>();
+                                                 .Where(c => c.IsDeleted == false)
+                                                 .ToListAsync()
+                                                 ?? Enumerable.Empty<Category>();
 
-                if (categories is null)
+                if (categories.Count() == 0)
                 {
                     TempData["ExceptionError"] = "An error occurred while getting all categories.";
                 }
@@ -226,11 +226,11 @@ namespace shipping_tracking.Controllers
             try
             {
                 var categories = await _dbContext.Categories
-                    .Where(c => c.IsDeleted == false)
-                    .ToListAsync()
-                    ?? Enumerable.Empty<Category>();
+                                                 .Where(c => c.IsDeleted == false)
+                                                 .ToListAsync()
+                                                 ?? Enumerable.Empty<Category>();
 
-                if (categories is null)
+                if (categories.Count() == 0)
                 {
                     TempData["ExceptionError"] = "An error occurred while getting all categories.";
                 }
