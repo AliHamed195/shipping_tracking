@@ -35,19 +35,19 @@
         {
             <tr id="product-row-@item.ProductID">
                 <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
+                    @item.ProductName
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Description)
+                    @item.Description
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Price)
+                    @item.Price
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.StockQuantity)
+                    @item.StockQuantity
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    @item.Category.CategoryName
                 </td>
                 <td>
                     <a asp-action="UpdateProduct" asp-route-id="@item.ProductID">Edit</a> |
