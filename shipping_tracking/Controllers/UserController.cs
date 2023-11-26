@@ -88,7 +88,7 @@ namespace shipping_tracking.Controllers
         /// </summary>
         /// <param name="viewModel"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateUser(UserRoleViewModel viewModel)
         {
