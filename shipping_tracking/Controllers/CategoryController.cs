@@ -22,7 +22,11 @@ namespace shipping_tracking.Controllers
         {
             try
             {
-                var categories = await _dbContext.Categories.ToListAsync() ?? Enumerable.Empty<Category>();
+                var categories = await _dbContext.Categories
+                    .Where(c => c.IsDeleted == false)
+                    .ToListAsync()
+                    ?? Enumerable.Empty<Category>();
+
                 return View(categories);
             }
             catch (Exception ex)
@@ -46,7 +50,7 @@ namespace shipping_tracking.Controllers
             {
                 // Check if category name already exists
                 bool categoryExists = await _dbContext.Categories
-                                           .AnyAsync(c => c.CategoryName == category.CategoryName);
+                                           .AnyAsync(c => c.CategoryName == category.CategoryName && c.IsDeleted == false);
                 if (categoryExists)
                 {
                     ModelState.AddModelError("CategoryName", "The name already exists. Please enter another one.");
@@ -83,7 +87,8 @@ namespace shipping_tracking.Controllers
         {
             try
             {
-                var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.CategoryID == id);
+                var category = await _dbContext.Categories
+                    .FirstOrDefaultAsync(c => c.CategoryID == id && c.IsDeleted == false);
 
                 if (category is null)
                 {
@@ -110,7 +115,11 @@ namespace shipping_tracking.Controllers
             {
                 // Check if another category with the same name exists
                 bool nameExists = await _dbContext.Categories
-                                      .AnyAsync(c => c.CategoryID != id && c.CategoryName == category.CategoryName);
+                                      .AnyAsync(c =>
+                                      c.CategoryID != id &&
+                                      c.CategoryName == category.CategoryName &&
+                                      c.IsDeleted == false
+                                      );
 
                 if (nameExists)
                 {
@@ -118,7 +127,9 @@ namespace shipping_tracking.Controllers
                     return View(category);
                 }
 
-                var oldCategory = await _dbContext.Categories.FirstOrDefaultAsync(c => c.CategoryID == id);
+                var oldCategory = await _dbContext.Categories
+                    .FirstOrDefaultAsync(c => c.CategoryID == id && c.IsDeleted == false);
+
                 int result = -1;
 
                 if (oldCategory is not null)
@@ -155,7 +166,8 @@ namespace shipping_tracking.Controllers
 
             try
             {
-                var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.CategoryID == id);
+                var category = await _dbContext.Categories
+                    .FirstOrDefaultAsync(c => c.CategoryID == id && c.IsDeleted == false);
 
                 if (category is null)
                 {
@@ -178,7 +190,8 @@ namespace shipping_tracking.Controllers
         {
             try
             {
-                var category = await _dbContext.Categories.FindAsync(id);
+                var category = await _dbContext.Categories
+                    .FirstOrDefaultAsync(c => c.CategoryID == id && c.IsDeleted == false);
 
                 if (category is null)
                 {
