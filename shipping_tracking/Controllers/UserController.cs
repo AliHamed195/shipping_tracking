@@ -159,5 +159,78 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /User/Update/{id}
+        /// Retrieves a user by ID for updating
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpGet("Update/{id}")]
+        public async Task<IActionResult> UpdateUser(int id)
+        {
+            try
+            {
+                var user = _dbContext.Users
+                    .Include(u => u.Role)
+                    .SingleOrDefault(u => u.Id == id && u.isDeleted == false);
+
+                if (user is null)
+                {
+                    TempData["ExceptionError"] = "User not found or an error occurred while getting the user";
+                    return RedirectToAction(nameof(AllUsers));
+                }
+
+                var roles = await _dbContext.Roles
+                                            .Where(c => c.IsDeleted == false)
+                                            .ToListAsync()
+                                            ?? Enumerable.Empty<Role>();
+
+                if (roles.Count() == 0)
+                {
+                    TempData["ExceptionError"] = "An error occurred while getting all roles.";
+                }
+
+                var viewModel = new UserRoleViewModel()
+                {
+                    User = user,
+                    Roles = roles
+                };
+
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(exception: ex, message: $"An error occurred while getting the user with ID {id}.");
+                TempData["ExceptionError"] = "An error occurred while getting the user";
+
+                return RedirectToAction(nameof(AllUsers));
+            }
+        }
+
+        /// <summary>
+        /// POST: /User/Update/{id}
+        /// Validates and updates a user in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
+        [HttpPost("Update/{id}")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UpdateUser(int id, UserRoleViewModel viewModel)
+        {
+            try
+            {
+                return View(viewModel);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(exception: ex, message: $"An error occurred while update the user.");
+                TempData["ExceptionError"] = "An error occurred while update the user";
+
+                return RedirectToAction(nameof(AllUsers));
+            }
+        }
+
+
     }
 }

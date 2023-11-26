@@ -182,7 +182,7 @@ namespace shipping_tracking.Controllers
                 if (product is null)
                 {
                     TempData["ExceptionError"] = "An error occurred while getting the product.";
-                    return View(new ProductCategoriesViewModel() { Categories = Enumerable.Empty<Category>() });
+                    return RedirectToAction(nameof(AllProducts));
                 }
 
                 var categories = await _dbContext.Categories
@@ -261,7 +261,7 @@ namespace shipping_tracking.Controllers
                     TempData["ExceptionError"] = "An error occurred while getting the Product.";
                     viewModel.Categories = categories;
 
-                    return View(viewModel);
+                    return RedirectToAction(nameof(AllProducts));
                 }
 
                 // Handle image file

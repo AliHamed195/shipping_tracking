@@ -118,6 +118,7 @@ namespace shipping_tracking.Controllers
 
                 if (category is null)
                 {
+                    // need to return it to [AllCategories] page to not cause any error
                     category = new Category();
                     ViewBag.ExceptionError = "An error occurred while getting the category. Please try again later.";
                 }
