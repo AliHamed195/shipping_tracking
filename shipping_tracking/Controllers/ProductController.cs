@@ -12,12 +12,22 @@ namespace shipping_tracking.Controllers
         private readonly MyDbContext _dbContext;
         private readonly ILogger<ProductController> _logger;
 
+        /// <summary>
+        /// Constructor: Initializes the controller with database context and logger
+        /// </summary>
+        /// <param name="dbContext"></param>
+        /// <param name="logger"></param>
         public ProductController(MyDbContext dbContext, ILogger<ProductController> logger)
         {
             _dbContext = dbContext;
             _logger = logger;
         }
 
+        /// <summary>
+        /// GET: /Product/All
+        /// Retrieves all non-deleted products and displays them in a view
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("All")]
         public async Task<IActionResult> AllProducts()
         {
@@ -38,6 +48,11 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /Product/Create
+        /// Returns a view for creating a new product
+        /// </summary>
+        /// <returns></returns>
         [HttpGet("Create")]
         public async Task<IActionResult> CreateProduct()
         {
@@ -69,6 +84,12 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// POST: /Product/Create
+        /// Validates and adds a new product to the database
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> CreateProduct(ProductCategoriesViewModel viewModel)
@@ -142,6 +163,12 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /Product/Update/{id}
+        /// Retrieves a product by ID for updating
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Update/{id}")]
         public async Task<IActionResult> UpdateProduct(int id)
         {
@@ -185,7 +212,13 @@ namespace shipping_tracking.Controllers
             }
         }
 
-
+        /// <summary>
+        /// POST: /Product/Update/{id}
+        /// Validates and updates a product in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost("Update/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProduct(int id, ProductCategoriesViewModel viewModel)
@@ -297,6 +330,12 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        /// <summary>
+        /// GET: /Product/Details/{id}
+        /// Retrieves details of a specific product by ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet("Details/{id}")]
         public async Task<IActionResult> DetailsProduct(int id)
         {
@@ -325,8 +364,8 @@ namespace shipping_tracking.Controllers
         }
 
         /// <summary>
-        /// POST: /Category/Delete/{id}
-        /// Marks a category as deleted in the database
+        /// POST: /Product/Delete/{id}
+        /// Marks a product as deleted in the database
         /// </summary>
         /// <param name="id"></param>
         /// <returns></returns>
