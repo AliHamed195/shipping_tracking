@@ -297,7 +297,72 @@ namespace shipping_tracking.Controllers
             }
         }
 
+        [HttpGet("Details/{id}")]
+        public async Task<IActionResult> DetailsProduct(int id)
+        {
 
+            try
+            {
+                var product = await _dbContext.Products
+                    .Include(p => p.Category)
+                    .FirstOrDefaultAsync(c => c.ProductID == id && c.IsDeleted == false);
+
+                if (product is null)
+                {
+                    product = new Product();
+                    ViewBag.ExceptionError = "An error occurred while getting the product. Please try again later.";
+                }
+
+                return View(product);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details
+                _logger.LogError(exception: ex, message: "An error occurred while getting the product.");
+                ViewBag.ExceptionError = "An error occurred while getting the product. Please try again later.";
+                return View(new Product());
+            }
+        }
+
+        /// <summary>
+        /// POST: /Category/Delete/{id}
+        /// Marks a category as deleted in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost("Delete/{id}")]
+        public async Task<JsonResult> DeleteProduct(int id)
+        {
+            try
+            {
+                var product = await _dbContext.Products
+                    .FirstOrDefaultAsync(c => c.ProductID == id && c.IsDeleted == false);
+
+                if (product is null)
+                {
+                    return Json(new { success = false, message = "product not found." });
+                }
+
+                product.IsDeleted = true;
+                int result = await _dbContext.SaveChangesAsync();
+
+                if (result > 0)
+                {
+                    return Json(new { success = true, message = "product deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "An error occurred while deleting the product." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log the exception details here
+                _logger.LogError(exception: ex, message: "An error occurred while deleting the product.");
+
+                return Json(new { success = false, message = "An error occurred while deleting the product. Please try again later." });
+            }
+        }
 
     }
 }
