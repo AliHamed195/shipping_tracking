@@ -1,46 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
 
 namespace shipping_tracking.Controllers
 {
+    [Route("/User")]
     public class UserController : Controller
     {
         private readonly MyDbContext _dbContext;
+        private readonly ILogger<UserController> _logger;
 
-        public UserController(MyDbContext dbContext)
+        public UserController(MyDbContext dbContext, ILogger<UserController> logger)
         {
             _dbContext = dbContext;
+            _logger = logger;
         }
 
-        [HttpGet]
-        public ActionResult Create()
+        [HttpGet("All")]
+        public async Task<IActionResult> AllUsers()
         {
-            return View();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Create(User userProfile)
-        {
-            if (userProfile.ImageFile != null && userProfile.ImageFile.Length > 0)
+            try
             {
-                var fileName = Path.GetFileName(userProfile.ImageFile.FileName);
-                var uniqueFileName = $"{Guid.NewGuid()}_{fileName}";
-                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+                var users = await _dbContext.Users
+                    .Where(c => c.isDeleted == false)
+                    .Include(p => p.Role)
+                    .ToListAsync()
+                    ?? Enumerable.Empty<User>();
 
-                using (var stream = new FileStream(path, FileMode.Create))
-                {
-                    await userProfile.ImageFile.CopyToAsync(stream);
-                }
-
-                // Save the path to the database
-                userProfile.ImagePath = $"/images/{uniqueFileName}";
-                _dbContext.Users.Add(userProfile);
-                await _dbContext.SaveChangesAsync();
-
-                return Content("Done");
+                return View(users);
             }
-
-            return View(userProfile);
+            catch (Exception ex)
+            {
+                _logger.LogError(exception: ex, message: "An error occurred while getting all users.");
+                return View(Enumerable.Empty<User>());
+            }
         }
+
+
     }
 }
