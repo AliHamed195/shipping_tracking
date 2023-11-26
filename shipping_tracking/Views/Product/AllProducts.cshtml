@@ -1,0 +1,97 @@
+﻿@model IEnumerable<shipping_tracking.Models.Product>
+
+@{
+    ViewData["Title"] = "AllProducts";
+}
+
+<h1>All Products</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Product Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Price
+            </th>
+            <th>
+                Stock Quantity
+            </th>
+            <th>
+                Category
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StockQuantity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                </td>
+                <td>
+                    <a asp-action="UpdateProduct" asp-route-id="@item.ProductID">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+@if (TempData["successMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                position: 'top-end',
+                title: 'Done...',
+                text: '@TempData["successMessage"]',
+                icon: 'success',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+
+        @TempData["successMessage"] = null;
+    </script>
+}
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                position: 'top-end',
+                title: 'Oops!!'
+                                text: '@TempData["ErrorMessage"]',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+
+        @TempData["ErrorMessage"] = null;
+    </script>
+}

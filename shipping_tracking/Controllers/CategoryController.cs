@@ -25,15 +25,15 @@ namespace shipping_tracking.Controllers
                 var categories = await _dbContext.Categories.ToListAsync() ?? Enumerable.Empty<Category>();
                 return View(categories);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // I should handel the error by using sweetAlert2.
+                _logger.LogError(ex, "An error occurred while getting all categories.");
                 return View(Enumerable.Empty<Category>());
             }
         }
 
         [HttpGet("Create")]
-        public async Task<IActionResult> CreateCategory()
+        public IActionResult CreateCategory()
         {
             return View();
         }
@@ -84,7 +84,7 @@ namespace shipping_tracking.Controllers
             try
             {
                 var category = await _dbContext.Categories.FirstOrDefaultAsync(c => c.CategoryID == id);
-                
+
                 if (category is null)
                 {
                     category = new Category();
@@ -103,6 +103,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpPost("Update/{id}")]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateCategory(int id, Category category)
         {
             try
@@ -128,7 +129,7 @@ namespace shipping_tracking.Controllers
                     result = await _dbContext.SaveChangesAsync();
                 }
 
-                if(result > 0)
+                if (result > 0)
                 {
                     TempData["successMessage"] = "Category updated successfully";
                     return RedirectToAction(nameof(AllCategories));
@@ -179,15 +180,22 @@ namespace shipping_tracking.Controllers
             {
                 var category = await _dbContext.Categories.FindAsync(id);
 
-                if (category == null)
+                if (category is null)
                 {
                     return Json(new { success = false, message = "Category not found." });
                 }
 
-                _dbContext.Categories.Remove(category);
-                await _dbContext.SaveChangesAsync();
+                category.IsDeleted = true;
+                int result = await _dbContext.SaveChangesAsync();
 
-                return Json(new { success = true, message = "Category deleted successfully." });
+                if (result > 0)
+                {
+                    return Json(new { success = true, message = "Category deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "An error occurred while deleting the category." });
+                }
             }
             catch (Exception ex)
             {
