@@ -51,6 +51,23 @@
     </form>
 </div>
 
+@if (TempData["ExceptionError"] != null)
+{
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            Swal.fire({
+                position: 'top-end',
+                title: 'Oops!!',
+                text: '@TempData["ExceptionError"]',
+                icon: 'error',
+                showConfirmButton: false,
+                timer: 2000
+            });
+        });
+
+        @TempData["ExceptionError"] = null;
+    </script>
+}
 
 @section Scripts {
     @{

@@ -41,7 +41,7 @@ namespace shipping_tracking.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "An error occurred while getting all categories.");
+                _logger.LogError(exception: ex, message: "An error occurred while getting all categories.");
                 return View(Enumerable.Empty<Category>());
             }
         }
@@ -96,7 +96,7 @@ namespace shipping_tracking.Controllers
             catch (Exception ex)
             {
                 // Log the exception details
-                _logger.LogError(ex, "An error occurred in create new category.");
+                _logger.LogError(exception: ex, message: "An error occurred in create new category.");
                 ViewBag.ExceptionError = "An error occurred while creating the category. Please try again later.";
                 return View(category);
             }
@@ -127,7 +127,7 @@ namespace shipping_tracking.Controllers
             catch (Exception ex)
             {
                 // Log the exception details
-                _logger.LogError(ex, "An error occurred while getting the category.");
+                _logger.LogError(exception: ex, message: "An error occurred while getting the category.");
                 ViewBag.ExceptionError = "An error occurred while getting the category. Please try again later.";
                 return View(new Category());
             }
@@ -187,7 +187,7 @@ namespace shipping_tracking.Controllers
             catch (Exception ex)
             {
                 // Log the exception details
-                _logger.LogError(ex, "An error occurred while updateing the category.");
+                _logger.LogError(exception: ex, message: "An error occurred while updateing the category.");
                 ViewBag.ExceptionError = "An error occurred while updateing the category. Please try again later.";
                 return View(category);
             }
@@ -219,7 +219,7 @@ namespace shipping_tracking.Controllers
             catch (Exception ex)
             {
                 // Log the exception details
-                _logger.LogError(ex, "An error occurred while getting the category.");
+                _logger.LogError(exception: ex, message: "An error occurred while getting the category.");
                 ViewBag.ExceptionError = "An error occurred while getting the category. Please try again later.";
                 return View(new Category());
             }
@@ -259,7 +259,7 @@ namespace shipping_tracking.Controllers
             catch (Exception ex)
             {
                 // Log the exception details here
-                _logger.LogError(ex, "An error occurred while deleting the category.");
+                _logger.LogError(exception: ex, message: "An error occurred while deleting the category.");
 
                 return Json(new { success = false, message = "An error occurred while deleting the category. Please try again later." });
             }
