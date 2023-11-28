@@ -39,10 +39,5 @@ namespace shipping_tracking.Models
         [NotMapped]
         public IFormFile? ImageFile { get; set; }
 
-        [ForeignKey("Role")]
-        public int RoleId { get; set; }
-
-        // User Have one Role
-        public virtual Role? Role { get; set; }
     }
 }
