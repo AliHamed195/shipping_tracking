@@ -86,6 +86,10 @@ namespace shipping_tracking.Controllers
 
 
 
+        // the code belo is when i delete the 3 controllers .....
+
+
+
         /// <summary>
         /// GET: /User/All
         /// Retrieves all non-deleted users and displays them in a view
