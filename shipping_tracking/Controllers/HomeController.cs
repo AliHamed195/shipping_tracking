@@ -6,16 +6,19 @@ namespace shipping_tracking.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly MyDbContext _dbContext;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, MyDbContext dbContext)
         {
             _logger = logger;
+            _dbContext = dbContext;
         }
 
         public IActionResult HomePage()
         {
-            return View();
+            var categories = _dbContext.Categories.ToList();
+            return View(categories);
         }
 
 

@@ -1,4 +1,4 @@
-﻿@*@model shipping_tracking.Models.Category
+﻿@model IEnumerable<shipping_tracking.Models.Category>
 
 @{
     Layout = null;
@@ -10,12 +10,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UI Frameworks Page</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <style>
-        /* Custom styles for the layout */
-        .jumbotron-1, .jumbotron-2 {
+         .jumbotron-1, .jumbotron-2 {
             background-size: cover;
-            color: #fff;
+            color: black;
             width: 100%;
             height: 70vh;
             display: flex;
@@ -24,37 +23,36 @@
         }
 
         .jumbotron-1 {
-            background: url('laptop.jfif') no-repeat center center fixed;
+            background: src('~/assets/laptop.jfif') no-repeat center center fixed;
         }
 
         .jumbotron-2 {
-            background: url('laptop.jfif') no-repeat center center fixed;
+            background: src('~/assets/laptop.jfif') no-repeat center center fixed;
         }
 
-        /* Styles for the cards to match your branding */
-        .card {
+         .card {
             margin-top: 2rem;
             text-align: center;
         }
 
         .category-card {
             margin-top: 2rem;
-            overflow: hidden; /* Hide parts of the button that are outside the card initially */
-            transition: box-shadow 0.3s ease; /* Smooth shadow transition */
+            overflow: hidden;  
+            transition: box-shadow 0.3s ease;  
             position: relative;
             border: 1px solid black;
         }
 
         .category-card-button {
             position: absolute;
-            bottom: -60px; /* Start hidden below the card */
+            bottom: -60px; 
             left: 0;
             width: 100%;
-            background: #005cbf; /* Button background color */
-            color: white; /* Button text color */
-            transition: bottom 0.3s ease; /* Smooth slide-up transition */
+            background: #005cbf;  
+            color: white;  
+            transition: bottom 0.3s ease; 
             border: none;
-            padding: 10px 0; /* Vertical padding */
+            padding: 10px 0;  
         }
 
         .category-card:hover {
@@ -62,7 +60,7 @@
         }
 
             .category-card:hover .category-card-button {
-                bottom: 0; /* Slide up to become visible */
+                bottom: 0;  
             }
 
 
@@ -80,28 +78,25 @@
             background-color: #005cbf;
         }
 
-        /* Adjust navbar spacing */
-        .navbar {
+         .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .small-toggler .navbar-toggler-icon {
-            /* Adjust the icon size */
-            background-size: 0.75em 0.75em;
+             background-size: 0.75em 0.75em;
         }
 
 
         .navbar-nav .nav-item .nav-link:hover, .navbar-brand:hover {
-            color: #009BDF !important; /* Override Bootstrap styles with increased specificity */
+            color: #009BDF !important;  
             text-decoration: none;
         }
 
-        /* Account buttons hover effect */
-        .account-btns button:hover {
-            background-color: #005cbf; /* Background color on hover */
-            color: #fff; /* Text color on hover */
+         .account-btns button:hover {
+            background-color: #005cbf;  
+            color: #fff; 
         }
 
         .account-btns button {
@@ -110,29 +105,26 @@
             padding: 0.375rem 0.75rem;
             border-radius: 0.25rem;
             color: #005cbf;
-            transition: color 0.2s, background-color 0.2s; /* Smooth transition for hover effect */
+            transition: color 0.2s, background-color 0.2s;  
         }
 
-        /* Add bottom spacing to the container */
-        .container, .outer-container {
-            margin-bottom: 4rem; /* Adjust as needed */
+         .container, .outer-container {
+            margin-bottom: 4rem; 
         }
 
-        /* About section */
-        .about {
+         .about {
             padding: 2rem 5rem;
             background-color: #f9f9f9;
         }
 
-        /* Team cards styles */
-        .team-card {
+         .team-card {
             margin-top: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition for hover effect */
+            transition: transform 0.3s ease, box-shadow 0.3s ease;  
         }
 
             .team-card:hover {
-                transform: scale(1.05); /* Scales up the card */
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Adds shadow effect */
+                transform: scale(1.05);  
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);  
             }
 
             .team-card img {
@@ -154,8 +146,7 @@
         }
 
 
-        /* Footer styles */
-        .footer {
+         .footer {
             background-color: #333;
             color: #fff;
             padding: 2rem 0;
@@ -173,8 +164,7 @@
                     color: #009BDF;
                 }
 
-        /* Link smooth scrolling */
-        html {
+         html {
             scroll-behavior: smooth;
         }
 
@@ -189,7 +179,7 @@
         </button>
 
 
-        <a class="navbar-brand" href="#">Progress 'Telerik'</a>
+        <a class="navbar-brand" href="#">Ali Online</a>
 
         <!-- Navbar content wrapped in a div with an id to be targeted by the toggler -->
         <div class="collapse navbar-collapse" id="navbarContent">
@@ -210,8 +200,8 @@
 
         <div class="jumbotron-1 jumbotron text-center">
             <div>
-                <h1>Develop Experiences</h1>
-                <p>UI frameworks and app development tools that 2.1 million developers love</p>
+                <h1>Welcome ... </h1>
+                <p>Hope you will enjoy shopping</p>
             </div>
         </div>
 
@@ -223,7 +213,7 @@
                 <!-- card 1 -->
                 <div class="col-md-4">
                     <div class="card category-card">
-                        <img src="R.jfif" alt="Category Image" class="card-img-top">
+                        <img src="~/assets/R.jfif" alt="Category Image" class="card-img-top">
                         <div class="card-body">
                             <h5 class="card-title">Category Title</h5>
                             <p class="card-text">Category description...</p>
@@ -233,73 +223,6 @@
                     </div>
                 </div>
                 <!-- card 1 -->
-                <!-- card 2 -->
-                <div class="col-md-4">
-                    <div class="card category-card">
-                        <img src="R.jfif" alt="Category Image" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Category Title</h5>
-                            <p class="card-text">Category description...</p>
-                            <!-- The button is initially positioned off the bottom of the card -->
-                            <button class="category-card-button">Learn More</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 2 -->
-                <!-- card 3 -->
-                <div class="col-md-4">
-                    <div class="card category-card">
-                        <img src="R.jfif" alt="Category Image" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Category Title</h5>
-                            <p class="card-text">Category description...</p>
-                            <!-- The button is initially positioned off the bottom of the card -->
-                            <button class="category-card-button">Learn More</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 3 -->
-                <!-- card 4 -->
-                <div class="col-md-4">
-                    <div class="card category-card">
-                        <img src="R.jfif" alt="Category Image" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Category Title</h5>
-                            <p class="card-text">Category description...</p>
-                            <!-- The button is initially positioned off the bottom of the card -->
-                            <button class="category-card-button">Learn More</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 4 -->
-                <!-- card 5 -->
-                <div class="col-md-4">
-                    <div class="card category-card">
-                        <img src="R.jfif" alt="Category Image" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Category Title</h5>
-                            <p class="card-text">Category description...</p>
-                            <!-- The button is initially positioned off the bottom of the card -->
-                            <button class="category-card-button">Learn More</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 5 -->
-                <!-- card 6 -->
-                <div class="col-md-4">
-                    <div class="card category-card">
-                        <img src="R.jfif" alt="Category Image" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Category Title</h5>
-                            <p class="card-text">Category description...</p>
-                            <!-- The button is initially positioned off the bottom of the card -->
-                            <button class="category-card-button">Learn More</button>
-                        </div>
-                    </div>
-                </div>
-                <!-- card 6 -->
-
-
 
             </div>
 
@@ -308,8 +231,8 @@
 
         <div class="jumbotron-2 jumbotron text-center">
             <div>
-                <h1>More Experiences</h1>
-                <p>Join the community of millions and grow your skills</p>
+                <h1>We are the best</h1>
+                <p>Join with us and get a lot of products</p>
             </div>
         </div>
 
@@ -332,7 +255,7 @@
             <!-- Team member card 1 -->
             <div class="col-md-4">
                 <div class="card team-card">
-                    <img src="R.jfif" alt="Owner 1" class="card-img-top">
+                    <img src="~/assets/R.jfif" alt="Owner 1" class="card-img-top">
                     <div class="card-body team-card-body">
                         <h5 class="card-title team-card-title">Owner 1</h5>
                     </div>
@@ -342,7 +265,7 @@
             <!-- Team member card 2 -->
             <div class="col-md-4">
                 <div class="card team-card">
-                    <img src="R.jfif" alt="Owner 2" class="card-img-top">
+                    <img src="~/assets/R.jfif" alt="Owner 2" class="card-img-top">
                     <div class="card-body team-card-body">
                         <h5 class="card-title team-card-title">Owner 2</h5>
                     </div>
@@ -352,7 +275,7 @@
             <!-- Team member card 3 -->
             <div class="col-md-4">
                 <div class="card team-card">
-                    <img src="R.jfif" alt="Owner 3" class="card-img-top">
+                    <img src="~/assets/R.jfif" alt="Owner 3" class="card-img-top">
                     <div class="card-body team-card-body">
                         <h5 class="card-title team-card-title">Owner 3</h5>
                     </div>
@@ -373,14 +296,12 @@
             <p>Email: contact@example.com</p>
             <p>Phone: (123) 456-7890</p>
             <!-- Placeholder for the logo image -->
-            <img src="MyLogo.jfif" alt="Company Logo" style="max-width: 100px;">
+            <img src="~/assets/MyLogo.jfif" alt="Company Logo" style="max-width: 100px;">
         </div>
     </footer>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.9/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="~/js/jquery-3.5.1.slim.min.js"></script>
+    <script src="~/js/bootstrap.min.js"></script>
 </body>
 </html>
 
-*@
