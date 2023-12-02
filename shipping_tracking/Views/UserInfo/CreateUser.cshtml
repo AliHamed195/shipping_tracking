@@ -1,4 +1,56 @@
-﻿@*@model shipping_tracking.Models.ViewModels.UserRoleViewModel
+﻿@model shipping_tracking.Models.UserInfo
+
+<form asp-action="CreateUser" method="post" enctype="multipart/form-data">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div>
+        <label asp-for="AspNetUser.UserName">Username</label>
+        <input asp-for="AspNetUser.UserName" required />
+    </div>
+    <div>
+        <label asp-for="AspNetUser.Email">Email</label>
+        <input asp-for="AspNetUser.Email" required />
+    </div>
+    <div>
+        <label>Password</label>
+        <input name="password" type="password" required/>
+    </div>
+    <div>
+        <label asp-for="Address">Address</label>
+        <input asp-for="Address" required />
+    </div>
+    <div>
+        <label asp-for="ImageFile">Profile Image</label>
+        <input asp-for="ImageFile" type="file" required />
+    </div>
+    <div>
+        <label for="roleName">Role</label>
+        <select id="roleName" name="roleName" asp-items="@ViewBag.Roles" class="select2-dropdown" style="width:100%" required></select>
+    </div>
+    <button type="submit">Create User</button>
+</form>
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('.select2-dropdown').select2();
+        });
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+@*@model shipping_tracking.Models.ViewModels.UserRoleViewModel
 
 
 <h1>Create User</h1>

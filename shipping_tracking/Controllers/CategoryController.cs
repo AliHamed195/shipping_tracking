@@ -33,6 +33,7 @@ namespace shipping_tracking.Controllers
             try
             {
                 var categories = await _dbContext.Categories
+                    .AsNoTracking()
                     .Where(c => c.IsDeleted == false)
                     .ToListAsync()
                     ?? Enumerable.Empty<Category>();
@@ -207,6 +208,7 @@ namespace shipping_tracking.Controllers
             try
             {
                 var category = await _dbContext.Categories
+                    .AsNoTracking()
                     .FirstOrDefaultAsync(c => c.CategoryID == id && c.IsDeleted == false);
 
                 if (category is null)

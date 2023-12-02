@@ -12,7 +12,7 @@ namespace shipping_tracking.Models
         [ForeignKey("User")]
         public int UserID { get; set; }
 
-        public User? User { get; set; }
+        public UserInfo? User { get; set; }
 
         [Required(ErrorMessage = "Total Price is required.")]
         [Display(Name = "Total Price")]

@@ -34,10 +34,11 @@ namespace shipping_tracking.Controllers
             try
             {
                 var products = await _dbContext.Products
-                                               .Where(c => c.IsDeleted == false)
-                                               .Include(p => p.Category)
-                                               .ToListAsync()
-                                               ?? Enumerable.Empty<Product>();
+                    .AsNoTracking()
+                    .Where(c => c.IsDeleted == false)
+                    .Include(p => p.Category)
+                    .ToListAsync()
+                    ?? Enumerable.Empty<Product>();
 
                 return View(products);
             }

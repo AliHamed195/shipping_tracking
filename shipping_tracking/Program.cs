@@ -5,6 +5,7 @@ using shipping_tracking.Services.Interfaces;
 using shipping_tracking.Services.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
+var connectionString = builder.Configuration.GetConnectionString("myconn") ?? throw new InvalidOperationException("Connection string 'myconn' not found.");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -15,8 +16,13 @@ var provider = builder.Services.BuildServiceProvider();
 var configuration = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<MyDbContext>(item => item.UseSqlServer(configuration.GetConnectionString("myconn")));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
-    .AddEntityFrameworkStores<MyDbContext>();
+// Identity Managers
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+    options.SignIn.RequireConfirmedAccount = true;
+})
+.AddEntityFrameworkStores<MyDbContext>()
+.AddDefaultTokenProviders();
+
 
 // Services & Repositories
 builder.Services.AddScoped<IPasswordService, PasswordService>();

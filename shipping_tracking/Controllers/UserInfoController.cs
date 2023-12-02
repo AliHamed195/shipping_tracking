@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
 using shipping_tracking.Models.ViewModels;
@@ -8,18 +9,82 @@ using shipping_tracking.Services.Interfaces;
 namespace shipping_tracking.Controllers
 {
     [Route("/User")]
-    public class UserController : Controller
+    public class UserInfoController : Controller
     {
         private readonly MyDbContext _dbContext;
-        private readonly IPasswordService _passwordService;
-        private readonly ILogger<UserController> _logger;
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly ILogger<UserInfoController> _logger;
 
-        public UserController(MyDbContext dbContext, IPasswordService passwordService, ILogger<UserController> logger)
+        public UserInfoController(MyDbContext dbContext, RoleManager<IdentityRole> roleManager, UserManager<IdentityUser> userManager, ILogger<UserInfoController> logger)
         {
             _dbContext = dbContext;
-            _passwordService = passwordService;
+            _userManager = userManager;
+            _roleManager = roleManager;
             _logger = logger;
         }
+
+        [HttpGet("Create")]
+        public IActionResult CreateUser()
+        {
+            var roles = _roleManager.Roles.ToList();
+            ViewBag.Roles = new SelectList(roles, "Name", "Name");
+
+            return View();
+        }
+
+
+        [HttpPost("Create")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUser(UserInfo userInfo, string roleName, string password)
+        {
+            // TODO: ====================================
+            // need to fix the posible empty fields .....
+            // TODO: ====================================
+
+            if (userInfo.ImageFile != null && userInfo.ImageFile.Length > 0)
+            {
+                var fileName = Path.GetFileName(userInfo.ImageFile.FileName);
+                var uniqueFileName = $"{Guid.NewGuid()}_{fileName}";
+                var path = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images", uniqueFileName);
+
+                using (var stream = new FileStream(path, FileMode.Create))
+                {
+                    await userInfo.ImageFile.CopyToAsync(stream);
+                }
+
+                userInfo.ImagePath = $"/images/{uniqueFileName}";
+            }
+
+            var user = new IdentityUser { UserName = userInfo.AspNetUser.UserName, Email = userInfo.AspNetUser.Email };
+            var result = await _userManager.CreateAsync(user, password);
+
+            if (result.Succeeded)
+            {
+                // Assign the role
+                await _userManager.AddToRoleAsync(user, roleName);
+
+                // Save additional user info
+                userInfo.AspNetUserId = user.Id;
+                _dbContext.Users.Add(userInfo);
+                await _dbContext.SaveChangesAsync();
+
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError(string.Empty, error.Description);
+                }
+                var roles = _roleManager.Roles.ToList();
+                ViewBag.Roles = new SelectList(roles, "Name", "Name");
+            }
+
+            return View(userInfo);
+        }
+
+
 
         /// <summary>
         /// GET: /User/All
