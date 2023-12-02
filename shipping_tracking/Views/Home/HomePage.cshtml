@@ -210,19 +210,22 @@
 
             <div class="row">
 
-                <!-- card 1 -->
-                <div class="col-md-4">
-                    <div class="card category-card">
-                        <img src="~/assets/R.jfif" alt="Category Image" class="card-img-top">
-                        <div class="card-body">
-                            <h5 class="card-title">Category Title</h5>
-                            <p class="card-text">Category description...</p>
-                            <!-- The button is initially positioned off the bottom of the card -->
-                            <button class="category-card-button">Learn More</button>
+                @foreach(var item in Model)
+                {
+                    <!-- card 1 -->
+                    <div class="col-md-4">
+                        <div class="card category-card">
+                            <img src="~/assets/R.jfif" alt="Category Image" class="card-img-top">
+                            <div class="card-body">
+                                <h5 class="card-title">@item.CategoryName</h5>
+                                <p class="card-text">@item.Description</p>
+                                <!-- The button is initially positioned off the bottom of the card -->
+                                <button class="category-card-button">Learn More</button>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <!-- card 1 -->
+                    <!-- card 1 -->
+                }
 
             </div>
 
