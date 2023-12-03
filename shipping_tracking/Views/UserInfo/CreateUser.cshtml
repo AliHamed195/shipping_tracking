@@ -1,35 +1,61 @@
 ﻿@model shipping_tracking.Models.UserInfo
 
-<form asp-action="CreateUser" method="post" enctype="multipart/form-data">
+<form asp-action="CreateUser" method="post" enctype="multipart/form-data" class="container mt-4">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div>
-        <label asp-for="AspNetUser.UserName">Username</label>
-        <input asp-for="AspNetUser.UserName" required />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="AspNetUser.UserName" class="form-label">Username</label>
+                <input asp-for="AspNetUser.UserName" class="form-control" required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="AspNetUser.Email" class="form-label">Email</label>
+                <input asp-for="AspNetUser.Email" class="form-control" required />
+            </div>
+        </div>
     </div>
-    <div>
-        <label asp-for="AspNetUser.Email">Email</label>
-        <input asp-for="AspNetUser.Email" required />
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input name="password" type="password" class="form-control" required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="Address" class="form-label">Address</label>
+                <input asp-for="Address" class="form-control" required />
+            </div>
+        </div>
     </div>
-    <div>
-        <label>Password</label>
-        <input name="password" type="password" required/>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label asp-for="ImageFile" class="form-label">Profile Image</label>
+                <input asp-for="ImageFile" type="file" class="form-control" required />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="roleName" class="form-label">Role</label>
+                @if (ViewBag.Roles != null)
+                {
+                    <select id="roleName" name="roleName" asp-items="@ViewBag.Roles" class="select2-dropdown form-control" required style="width:100%;"></select>
+                }
+                else
+                {
+                    <select id="roleName" name="roleName" class="select2-dropdown form-control" required>
+                        <option>No options ...</option>
+                    </select>
+                }
+            </div>
+        </div>
     </div>
-    <div>
-        <label asp-for="Address">Address</label>
-        <input asp-for="Address" required />
-    </div>
-    <div>
-        <label asp-for="ImageFile">Profile Image</label>
-        <input asp-for="ImageFile" type="file" required />
-    </div>
-    <div>
-        <label for="roleName">Role</label>
-        <select id="roleName" name="roleName" asp-items="@ViewBag.Roles" class="select2-dropdown" style="width:100%" required></select>
-    </div>
-    <button type="submit">Create User</button>
+    <button type="submit" class="btn btn-primary">Create User</button>
 </form>
 
-
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
@@ -40,98 +66,3 @@
         });
     </script>
 }
-
-
-
-
-
-
-
-
-
-
-@*@model shipping_tracking.Models.ViewModels.UserRoleViewModel
-
-
-<h1>Create User</h1>
-
-<div class="row">
-    <form asp-controller="User" asp-action="CreateUser" method="post" enctype="multipart/form-data">
-        @Html.AntiForgeryToken()
-        <div class="form-group">
-            <label asp-for="User.Name"></label>
-            <input asp-for="User.Name" class="form-control" />
-            <span asp-validation-for="User.Name" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="User.Address"></label>
-            <textarea asp-for="User.Address" class="form-control"></textarea>
-            <span asp-validation-for="User.Address" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="User.Email"></label>
-            <input asp-for="User.Email" class="form-control"/>
-            <span asp-validation-for="User.Email" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="User.Password"></label>
-            <input asp-for="User.Password" class="form-control" />
-            <span asp-validation-for="User.Password" class="text-danger"></span>
-        </div>
-
-
-        <div class="form-group">
-            <label asp-for="User.Phone"></label>
-            <input asp-for="User.Phone" class="form-control" />
-            <span asp-validation-for="User.Phone" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="User.ImageFile">User Image</label>
-            <input asp-for="User.ImageFile" type="file" class="form-control" />
-        </div>
-
-        <div class="form-group">
-            <label asp-for="User.RoleId">Category</label>
-            <select asp-for="User.RoleId" asp-items="@(new SelectList(Model.Roles, "Id", "Name"))" class="select2-dropdown" style="width:100%">
-            </select>
-            <span asp-validation-for="User.RoleId" class="text-danger"></span>
-        </div>
-
-        <div class="form-group mt-3">
-            <button type="submit" class="btn btn-primary">Create</button>
-        </div>
-    </form>
-</div>
-
-@if (TempData["ExceptionError"] != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                position: 'top-end',
-                title: 'Oops!!',
-                text: '@TempData["ExceptionError"]',
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-
-        @TempData["ExceptionError"] = null;
-    </script>
-}
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script>
-        $(document).ready(function () {
-            $('.select2-dropdown').select2();
-        });
-    </script>
-}*@
