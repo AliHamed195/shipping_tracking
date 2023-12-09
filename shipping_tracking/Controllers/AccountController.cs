@@ -37,7 +37,7 @@ namespace shipping_tracking.Controllers
                         // i need to add alert
                         return RedirectToAction("HomePage", "Home");
                     }
-                    if (result.IsLockedOut)
+                    else if (result.IsLockedOut)
                     {
                         ModelState.AddModelError(string.Empty, "IsLockedOut.");
                     }
