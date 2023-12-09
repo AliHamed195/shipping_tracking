@@ -233,7 +233,7 @@
                                 <h5 class="card-title">@item.CategoryName</h5>
                                 <p class="card-text">@item.Description</p>
                                 <!-- The button is initially positioned off the bottom of the card -->
-                                <button class="category-card-button">Learn More</button>
+                                <a class="category-card-button" asp-route-id="@item.CategoryID" asp-action="GetProductsForCategory" asp-controller="Product">Learn More</a>
                             </div>
                         </div>
                     </div>

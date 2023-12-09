@@ -1,0 +1,72 @@
+﻿@model IEnumerable<shipping_tracking.Models.Product>
+
+<style>
+    .team-card {
+        margin-top: 2rem;
+    }
+
+        .team-card:hover {
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .team-card img {
+            width: 200px;
+            height: 200px;
+            border-top-left-radius: calc(0.25rem - 1px);
+            border-top-right-radius: calc(0.25rem - 1px);
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+    .team-card-body {
+        padding: 1rem;
+        text-align: left;
+    }
+
+    .team-card-title {
+        margin-top: 1rem;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+</style>
+
+<form method="post" asp-action="SubmitOrder" asp-controller="Product">
+    @if (User.IsInRole("Customer"))
+    {
+        <div class="mt-4">
+            <button type="submit" class="btn btn-primary">Submit Order</button>
+        </div>
+        <hr />
+    }
+
+    <div class="row">
+        @if (Model.Count() == 0)
+        {
+            <h1>There is no products available yet ...</h1>
+        }
+
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4">
+                <div class="card team-card">
+                    <img src="@product.imagePath" class="card-img-top">
+                    <div class="card-body team-card-body">
+                        <p class="card-title team-card-title">
+                            ProductName: @product.ProductName <br>
+                            Price: @product.Price <br>
+                            Description: @product.Description
+                        </p>
+                        @if (User.IsInRole("Customer"))
+                        {
+                            <div class="form-group">
+                                <label for="quantity">Quantity</label>
+                                <input type="number" class="form-control" min="1" value="1">
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</form>
