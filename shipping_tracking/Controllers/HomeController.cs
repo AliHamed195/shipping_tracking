@@ -21,6 +21,11 @@ namespace shipping_tracking.Controllers
             return View(categories);
         }
 
+        public IActionResult AdminPage()
+        {
+            return View();
+        }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

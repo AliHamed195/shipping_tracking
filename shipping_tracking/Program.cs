@@ -18,7 +18,7 @@ builder.Services.AddDbContext<MyDbContext>(item => item.UseSqlServer(configurati
 
 // Identity Managers
 builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
-    options.SignIn.RequireConfirmedAccount = true;
+    options.SignIn.RequireConfirmedAccount = false; // to avoid the email confirmation ...
 })
 .AddEntityFrameworkStores<MyDbContext>()
 .AddDefaultTokenProviders();
@@ -47,6 +47,6 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Home}/{action=HomePage}/{id?}");
 
 app.Run();

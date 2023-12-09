@@ -1,0 +1,96 @@
+﻿
+
+<style>
+    body {
+        background-color: #e9ecef;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .login-container {
+        border-radius: 25px;
+        background-color: white;
+        padding: 2rem;
+        margin-top: 5%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .form-control {
+        border-radius: 15px;
+        border: 1px solid #ced4da;
+    }
+
+    .login-side {
+        background: linear-gradient(135deg, #007bff, #002853);
+        color: white;
+        padding: 3rem;
+        border-top-left-radius: 25px;
+        border-bottom-left-radius: 25px;
+    }
+
+        .login-side h2, .login-side p {
+            margin-bottom: 1rem;
+        }
+
+    .form-group {
+        margin-bottom: 1.5rem;
+    }
+
+    .login-btn {
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(135deg, #0069d9, #005cbf);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+        float: right;
+    }
+
+        .login-btn:hover {
+            background: linear-gradient(135deg, #005cbf, #004085);
+            box-shadow: 0 0 10px rgba(0, 92, 191, 0.5);
+        }
+
+    .login-footer {
+        margin-top: 5rem;
+        text-align: center;
+        padding-top: 2rem;
+    }
+
+        .login-footer a {
+            text-decoration: none;
+            color: #007bff;
+            margin: 0 0.5rem;
+        }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="d-flex bg-light login-container">
+            <div class="login-side d-none d-lg-block col-lg-6">
+                <h2>Welcome</h2>
+                <p>Join our community of 20,000 users!</p>
+            </div>
+            <div class="col-lg-6 p-lg-5">
+                <h3 class="mb-4">Apply as an Employee</h3>
+                <form id="loginForm" method="post" asp-controller="Account" asp-action="Login">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <label for="emailInput">Email address</label>
+                        <input type="email" name="email" class="form-control" id="emailInput" placeholder="Enter email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="passwordInput">Password</label>
+                        <input type="password" name="password" class="form-control" id="passwordInput" placeholder="Password" required>
+                    </div>
+                    <button type="submit" class="btn login-btn">Login</button>
+                </form>
+                <footer class="login-footer">
+                    <a href="#">Forgot Password?</a> |
+                    <a href="#">Privacy Policy</a> |
+                    <a href="#">Terms of Service</a>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
