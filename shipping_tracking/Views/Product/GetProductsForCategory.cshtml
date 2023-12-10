@@ -59,7 +59,7 @@
                             </p>
                             @if (User.IsInRole("Customer"))
                             {
-                                <input type="number" class="form-control quantity" atr-product-id="@product.ProductID" min="0" value="0">
+                                <input type="number" class="form-control quantity" atr-product-id="@product.ProductID" atr-product-price="@product.Price" min="0" value="0">
                             }
                         </div>
                     </div>
@@ -81,10 +81,11 @@
             var orderItems = [];
             document.querySelectorAll(".quantity").forEach(function(input) {
                 var productId = input.getAttribute("atr-product-id");
+                var ProductPrice = input.getAttribute("atr-product-price");
                 var quantity = input.value;
 
                 if (quantity > 0) {
-                    orderItems.push({ ProductId: productId, Quantity: quantity });
+                    orderItems.push({ ProductId: productId, Quantity: quantity, ProductPrice: ProductPrice });
                 }
             });
 
@@ -100,10 +101,14 @@
                 })
                     .then(response => response.json())
                     .then(data => {
-                        console.log('Success:', data);
+                        if (data.success) {
+                            Swal.fire('Success!', data.message, 'success');
+                        } else {
+                            Swal.fire('Error!', data.message, 'error');
+                        }
                     })
                     .catch((error) => {
-                        console.error('Error:', error);
+                        Swal.fire('Error!', 'There was a problem while submitting your order.', 'error');
                     });
             }
 

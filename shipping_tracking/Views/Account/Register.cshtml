@@ -1,0 +1,137 @@
+﻿@model shipping_tracking.Models.UserInfo
+
+<style>
+    body {
+        background-color: #e9ecef;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .register-container {
+        border-radius: 25px;
+        background-color: white;
+        margin-top: 5%;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .register-top {
+        background: linear-gradient(135deg, #007bff, #002853);
+        color: white;
+        padding: 2rem;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+        text-align: center;
+    }
+
+    .form-control {
+        border-radius: 15px;
+        border: 1px solid #ced4da;
+    }
+
+    .register-btn {
+        border-radius: 20px;
+        padding: 0.5rem 1.5rem;
+        background: linear-gradient(135deg, #0069d9, #005cbf);
+        color: white;
+        border: none;
+        transition: all 0.3s ease;
+        float: right;
+    }
+
+        .register-btn:hover {
+            background: linear-gradient(135deg, #005cbf, #004085);
+            box-shadow: 0 0 10px rgba(0, 92, 191, 0.5);
+        }
+</style>
+
+<div class="row justify-content-center">
+    <div class="col-lg-10">
+        <div class="register-container">
+            <div class="register-top">
+                <h2>Join Us</h2>
+                <p>Become a member of our community!</p>
+            </div>
+            <div class="p-lg-5">
+                <form asp-action="Register" asp-controller="Account" method="post" enctype="multipart/form-data" id="registerForm">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AspNetUser.UserName" class="control-label">Username</label>
+                                <input asp-for="AspNetUser.UserName" class="form-control" />
+                                <span asp-validation-for="AspNetUser.UserName" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="AspNetUser.Email" class="control-label">Email</label>
+                                <input asp-for="AspNetUser.Email" class="form-control" />
+                                <span asp-validation-for="AspNetUser.Email" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label class="control-label">Password</label>
+                                <input name="password" type="password" class="form-control" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="Address" class="control-label">Address</label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label asp-for="ImageFile" class="control-label">Profile Image</label>
+                                <input asp-for="ImageFile" type="file" class="form-control" />
+                                <span asp-validation-for="ImageFile" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="roleName" class="form-label">Role</label>
+                                @if (ViewBag.Roles != null)
+                                {
+                                    <select id="roleName" name="roleName" asp-items="@ViewBag.Roles" class="select2-dropdown form-control" required style="width:100%;"></select>
+                                }
+                                else
+                                {
+                                    <select id="roleName" name="roleName" class="select2-dropdown form-control" required>
+                                        <option>No options ...</option>
+                                    </select>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mt-4">
+                        <button type="submit" class="btn register-btn">Register</button>
+                    </div>
+                </form>
+                <div class="login-footer">
+                    <a asp-action="Login" asp-controller="Account">Already have an account? Login here.</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+    <script>
+        $(document).ready(function () {
+            $('.select2-dropdown').select2();
+        });
+    </script>
+}

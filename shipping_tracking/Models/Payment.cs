@@ -14,7 +14,7 @@ namespace shipping_tracking.Models
         public Order Order { get; set; }
 
         [Display(Name = "Payment Method")]
-        public string PaymentMethod { get; set; }
+        public string PaymentMethod { get; set; } = "Cash on Delivery";
 
         [Display(Name = "Payment Status")]
         public string PaymentStatus { get; set; }

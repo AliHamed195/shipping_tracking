@@ -12,11 +12,11 @@
     <title>UI Frameworks Page</title>
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <style>
-         .jumbotron-1, .jumbotron-2 {
+        .jumbotron-1, .jumbotron-2 {
             background-size: cover;
             width: 100%;
             height: 70vh;
-            color:white;
+            color: white;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -30,29 +30,29 @@
             background: url('/assets/laptop.jfif') no-repeat center center fixed;
         }
 
-         .card {
+        .card {
             margin-top: 2rem;
             text-align: center;
         }
 
         .category-card {
             margin-top: 2rem;
-            overflow: hidden;  
-            transition: box-shadow 0.3s ease;  
+            overflow: hidden;
+            transition: box-shadow 0.3s ease;
             position: relative;
             border: 1px solid black;
         }
 
         .category-card-button {
             position: absolute;
-            bottom: -60px; 
+            bottom: -60px;
             left: 0;
             width: 100%;
-            background: #005cbf;  
-            color: white;  
-            transition: bottom 0.3s ease; 
+            background: #005cbf;
+            color: white;
+            transition: bottom 0.3s ease;
             border: none;
-            padding: 10px 0;  
+            padding: 10px 0;
         }
 
         .category-card:hover {
@@ -60,7 +60,7 @@
         }
 
             .category-card:hover .category-card-button {
-                bottom: 0;  
+                bottom: 0;
             }
 
 
@@ -78,25 +78,25 @@
             background-color: #005cbf;
         }
 
-         .navbar {
+        .navbar {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
 
         .small-toggler .navbar-toggler-icon {
-             background-size: 0.75em 0.75em;
+            background-size: 0.75em 0.75em;
         }
 
 
         .navbar-nav .nav-item .nav-link:hover, .navbar-brand:hover {
-            color: #009BDF !important;  
+            color: #009BDF !important;
             text-decoration: none;
         }
 
-         .account-btns button:hover {
-            background-color: #005cbf;  
-            color: #fff; 
+        .account-btns button:hover {
+            background-color: #005cbf;
+            color: #fff;
         }
 
         .account-btns button {
@@ -105,26 +105,26 @@
             padding: 0.375rem 0.75rem;
             border-radius: 0.25rem;
             color: #005cbf;
-            transition: color 0.2s, background-color 0.2s;  
+            transition: color 0.2s, background-color 0.2s;
         }
 
-         .container, .outer-container {
-            margin-bottom: 4rem; 
+        .container, .outer-container {
+            margin-bottom: 4rem;
         }
 
-         .about {
+        .about {
             padding: 2rem 5rem;
             background-color: #f9f9f9;
         }
 
-         .team-card {
+        .team-card {
             margin-top: 2rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;  
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
             .team-card:hover {
-                transform: scale(1.05);  
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);  
+                transform: scale(1.05);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             }
 
             .team-card img {
@@ -146,7 +146,7 @@
         }
 
 
-         .footer {
+        .footer {
             background-color: #333;
             color: #fff;
             padding: 2rem 0;
@@ -164,7 +164,7 @@
                     color: #009BDF;
                 }
 
-         html {
+        html {
             scroll-behavior: smooth;
         }
 
@@ -222,24 +222,29 @@
             <!-- ... Cards ... -->
 
             <div class="row">
-
-                @foreach(var item in Model)
+                @if (Model.Any())
                 {
-                    <!-- card 1 -->
-                    <div class="col-md-4">
-                        <div class="card category-card">
-                            <img src="~/assets/R.jfif" alt="Category Image" class="card-img-top">
-                            <div class="card-body">
-                                <h5 class="card-title">@item.CategoryName</h5>
-                                <p class="card-text">@item.Description</p>
-                                <!-- The button is initially positioned off the bottom of the card -->
-                                <a class="category-card-button" asp-route-id="@item.CategoryID" asp-action="GetProductsForCategory" asp-controller="Product">Learn More</a>
+                    @foreach (var item in Model)
+                    {
+                        <!-- card 1 -->
+                        <div class="col-md-4">
+                            <div class="card category-card">
+                                <img src="~/assets/R.jfif" alt="Category Image" class="card-img-top">
+                                <div class="card-body">
+                                    <h5 class="card-title">@item.CategoryName</h5>
+                                    <p class="card-text">@item.Description</p>
+                                    <!-- The button is initially positioned off the bottom of the card -->
+                                    <a class="category-card-button" asp-route-id="@item.CategoryID" asp-action="GetProductsForCategory" asp-controller="Product">Learn More</a>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <!-- card 1 -->
+                        <!-- card 1 -->
+                    }
                 }
-
+                else
+                {
+                    <h1>There are no Categories available yet ...</h1>
+                }
             </div>
 
             <!-- ... Cards ... -->
