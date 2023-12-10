@@ -1,4 +1,7 @@
 ﻿@model IEnumerable<shipping_tracking.Models.Product>
+@{
+    int index = 0;
+}
 
 <style>
     .team-card {
@@ -31,42 +34,80 @@
     }
 </style>
 
-<form method="post" asp-action="SubmitOrder" asp-controller="Product">
+<form>
     @if (User.IsInRole("Customer"))
     {
         <div class="mt-4">
-            <button type="submit" class="btn btn-primary">Submit Order</button>
+            <button id="submitOrder" class="btn btn-primary">Submit Order</button>
         </div>
         <hr />
     }
 
     <div class="row">
-        @if (Model.Count() == 0)
+        @if (Model.Any())
         {
-            <h1>There is no products available yet ...</h1>
-        }
-
-        @foreach (var product in Model)
-        {
-            <div class="col-md-4">
-                <div class="card team-card">
-                    <img src="@product.imagePath" class="card-img-top">
-                    <div class="card-body team-card-body">
-                        <p class="card-title team-card-title">
-                            ProductName: @product.ProductName <br>
-                            Price: @product.Price <br>
-                            Description: @product.Description
-                        </p>
-                        @if (User.IsInRole("Customer"))
-                        {
-                            <div class="form-group">
-                                <label for="quantity">Quantity</label>
-                                <input type="number" class="form-control" min="1" value="1">
-                            </div>
-                        }
+            @foreach (var product in Model)
+            {
+                <div class="col-md-4">
+                    <div class="card team-card">
+                        <img src="@product.imagePath" class="card-img-top">
+                        <div class="card-body team-card-body">
+                            <p class="card-title team-card-title">
+                                ProductName: @product.ProductName <br>
+                                Price: @product.Price <br>
+                                Description: @product.Description
+                            </p>
+                            @if (User.IsInRole("Customer"))
+                            {
+                                <input type="number" class="form-control quantity" atr-product-id="@product.ProductID" min="0" value="0">
+                            }
+                        </div>
                     </div>
                 </div>
-            </div>
+            }
+        }
+        else
+        {
+            <h1>There are no products available yet ...</h1>
         }
     </div>
 </form>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        document.getElementById("submitOrder").addEventListener("click", function(event) {
+            event.preventDefault();
+
+            var orderItems = [];
+            document.querySelectorAll(".quantity").forEach(function(input) {
+                var productId = input.getAttribute("atr-product-id");
+                var quantity = input.value;
+
+                if (quantity > 0) {
+                    orderItems.push({ ProductId: productId, Quantity: quantity });
+                }
+            });
+
+            if (orderItems.length == 0){
+                Swal.fire('Oops!!', 'Please select order first', 'info');
+            }else{
+                fetch('/Orders/SubmitOrder', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(orderItems),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    });
+            }
+
+            
+        });
+    });
+</script>

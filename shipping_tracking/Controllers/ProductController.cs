@@ -410,15 +410,17 @@ namespace shipping_tracking.Controllers
             try
             {
                 IEnumerable<Product> products = await _dbContext.Products
-                    .Where(p => p.CategoryID == id && p.StockQuantity > 0 && p.IsDeleted == false).ToListAsync();
+                    .Where(p => p.CategoryID == id && p.StockQuantity > 0 && p.IsDeleted == false)
+                    .ToListAsync();
 
                 products ??= Enumerable.Empty<Product>();
+               
 
                 return View(products);
             }
             catch (Exception)
             {
-                // need to handel the error
+                // Handle the error
                 return View(Enumerable.Empty<Product>());
             }
         }
