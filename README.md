@@ -2,6 +2,7 @@
 
 ## Introduction
 This project is an educational project to help the beginners understand how to create their first .net core project.
+
 The Shipping Tracking System is a comprehensive web application designed to facilitate the management of shipping orders, user accounts, product inventories, and categories. Built with ASP.NET Core, this application leverages Entity Framework Core for efficient data handling and the ASP.NET Core Identity for robust user authentication and authorization.
 
 ## Prerequisites
