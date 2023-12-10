@@ -43,12 +43,15 @@ namespace shipping_tracking.Controllers
                     {
                         // send it to the home page so he can start shopping....
                         // i need to add alert
-                        var userInfo = await _context.Users.FirstOrDefaultAsync(u => u.AspNetUserId == user.Id);
-                        var userIdClaim = new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString());
-                        var identity = new ClaimsIdentity();
-                        identity.AddClaim(userIdClaim);
+
+                        // need to fix the insert user first.
+                        //var userInfo = await _context.Users.FirstOrDefaultAsync(u => u.AspNetUserId == user.Id);
+                        //var userIdClaim = new Claim(ClaimTypes.NameIdentifier, userInfo.Id.ToString());
+                        //var identity = new ClaimsIdentity();
+                        //identity.AddClaim(userIdClaim);
 
                         await _signInManager.RefreshSignInAsync(user);
+                        TempData["LoginSuccess"] = $"Welcome Back {user.UserName}";
                         return RedirectToAction("HomePage", "Home");
                     }
                     else if (result.IsLockedOut)
