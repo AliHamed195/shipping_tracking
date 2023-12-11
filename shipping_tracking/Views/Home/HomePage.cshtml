@@ -329,18 +329,21 @@
 </body>
 </html>
 
-@if (TempData["LoginSuccess"] != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                title: 'Success!',
-                text: '@TempData["LoginSuccess"]',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 1500 
+
+@section Scripts {
+    @if (TempData["LoginSuccess"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                Swal.fire({
+                    title: 'Success!',
+                    text: '@TempData["LoginSuccess"]',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 1500
+                });
             });
-        });
-    </script>
-    TempData["LoginSuccess"] = null;
+        </script>
+        TempData["LoginSuccess"] = null;
+    }
 }

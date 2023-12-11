@@ -73,46 +73,49 @@
     </div>
 </form>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        document.getElementById("submitOrder").addEventListener("click", function(event) {
-            event.preventDefault();
 
-            var orderItems = [];
-            document.querySelectorAll(".quantity").forEach(function(input) {
-                var productId = input.getAttribute("atr-product-id");
-                var ProductPrice = input.getAttribute("atr-product-price");
-                var quantity = input.value;
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("submitOrder").addEventListener("click", function (event) {
+                event.preventDefault();
 
-                if (quantity > 0) {
-                    orderItems.push({ ProductId: productId, Quantity: quantity, ProductPrice: ProductPrice });
-                }
-            });
+                var orderItems = [];
+                document.querySelectorAll(".quantity").forEach(function (input) {
+                    var productId = input.getAttribute("atr-product-id");
+                    var ProductPrice = input.getAttribute("atr-product-price");
+                    var quantity = input.value;
 
-            if (orderItems.length == 0){
-                Swal.fire('Oops!!', 'Please select order first', 'info');
-            }else{
-                fetch('/Orders/SubmitOrder', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(orderItems),
-                })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            Swal.fire('Success!', data.message, 'success');
-                        } else {
-                            Swal.fire('Error!', data.message, 'error');
-                        }
+                    if (quantity > 0) {
+                        orderItems.push({ ProductId: productId, Quantity: quantity, ProductPrice: ProductPrice });
+                    }
+                });
+
+                if (orderItems.length == 0) {
+                    Swal.fire('Oops!!', 'Please select order first', 'info');
+                } else {
+                    fetch('/Orders/SubmitOrder', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(orderItems),
                     })
-                    .catch((error) => {
-                        Swal.fire('Error!', 'There was a problem while submitting your order.', 'error');
-                    });
-            }
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('Success!', data.message, 'success');
+                            } else {
+                                Swal.fire('Error!', data.message, 'error');
+                            }
+                        })
+                        .catch((error) => {
+                            Swal.fire('Error!', 'There was a problem while submitting your order.', 'error');
+                        });
+                }
 
-            
+
+            });
         });
-    });
-</script>
+    </script>
+}

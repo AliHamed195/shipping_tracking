@@ -27,22 +27,23 @@
 </div>
 
 
-@if (ViewBag.ExceptionError != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                position: 'top-end',
-                title: 'Oops!!',
-                text: '@ViewBag.ExceptionError',
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 2000
-            });
-        });
-    </script>
-}
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @if (ViewBag.ExceptionError != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Oops!!',
+                    text: '@ViewBag.ExceptionError',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
+            });
+        </script>
+    }
 }
