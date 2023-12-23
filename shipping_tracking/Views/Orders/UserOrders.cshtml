@@ -26,7 +26,7 @@
         $(document).ready(function () {
             var counter = 1; // Row counter
 
-            $('.table').DataTable({
+            var table = $('.table').DataTable({
                 ajax: {
                     url: '/api/Cart/Get',
                     dataSrc: ''
@@ -42,15 +42,58 @@
                     { data: 'orderStatus' },
                     { data: 'createdOn' },
                     {
-                        data: 'orderID',
+                        data: null, 
                         render: function (data, type, row) {
-                            return `<button class="btn btn-danger js-delete" data-order-id="${data}"> Cancel </button>
-                                                    <button class="btn btn-info js-info" data-order-id="${data}"> Info </button>`;
+                            if (row.orderStatus !== 'Cancelled') {
+                                return `<button class="btn btn-danger js-delete" data-order-id="${row.orderID}">Cancel</button>
+                                                <button class="btn btn-info js-info" data-order-id="${row.orderID}">Info</button>`;
+                            } else {
+                                return `<button class="btn btn-info js-info" data-order-id="${row.orderID}" style="width:50%;">Info</button>`;
+                            }
                         }
                     }
                 ],
                 destroy: true,
                 order: [[3, "desc"]]
+            });
+
+            $('.table').on('click', '.js-delete', function () {
+                var button = $(this);
+                var id = button.data('order-id');
+
+                Swal.fire({
+                    title: 'Are you sure you want to cancel this order?',
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, cancel it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: '/api/Cart/Cancel/' + id,
+                            method: 'PUT',
+                            success: function () {
+                                Swal.fire(
+                                    'Cancelled!',
+                                    'The order has been cancelled.',
+                                    'success'
+                                );
+                                var row = table.row(button.parents('tr'));
+                                var rowData = row.data();
+                                rowData.orderStatus = 'Cancelled';
+                                row.data(rowData).invalidate().draw();
+                            },
+                            error: function () {
+                                Swal.fire(
+                                    'Error!',
+                                    'An error occurred while cancelling the order.',
+                                    'error'
+                                );
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>

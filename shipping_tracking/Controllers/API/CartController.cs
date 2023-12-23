@@ -27,7 +27,7 @@ namespace shipping_tracking.Controllers.API
             }
 
             var user = await _userManager.GetUserAsync(User);
-            if (user == null)
+            if (user is null)
             {
                 return BadRequest();
             }
@@ -43,10 +43,52 @@ namespace shipping_tracking.Controllers.API
             userId = userInfo.Id;
 
             var orders = await _dbContext.Orders
-                              .Where(o => o.UserID == userId && o.IsDeleted == false)
+                              .Where(o => o.UserID == userId)
                               .AsNoTracking()
                               .ToListAsync();
             return Ok(orders);
+        }
+
+
+        [HttpPut("Cancel/{id}")]
+        public async Task<IActionResult> DeleteOrder(int id)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userManager.GetUserAsync(User);
+            if (user is null)
+            {
+                return BadRequest();
+            }
+
+            int userId = -1;
+            var userInfo = _dbContext.Users.Where(u => u.AspNetUserId == user.Id).FirstOrDefault();
+
+            if (userInfo is null)
+            {
+                return BadRequest();
+            }
+
+            userId = userInfo.Id;
+
+            var order = await _dbContext.Orders
+                              .Where(o => o.UserID == userId && o.IsDeleted == false && o.OrderID == id)
+                              .FirstOrDefaultAsync();
+
+            if (order is null)
+            {
+                return BadRequest();
+            }
+
+            order.IsDeleted = true;
+            order.OrderStatus = "Cancelled";
+
+            await _dbContext.SaveChangesAsync();
+
+            return Ok();
         }
 
 
