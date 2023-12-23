@@ -30,6 +30,7 @@ namespace shipping_tracking.Controllers
         public async Task<IActionResult> AllUsers()
         {
             var users = await _dbContext.Users
+                                        .Where(x => x.isDeleted == false)
                                         .Include(u => u.AspNetUser) 
                                         .AsNoTracking()
                                         .ToListAsync();
@@ -83,10 +84,11 @@ namespace shipping_tracking.Controllers
 
                     // Save additional user info
                     userInfo.AspNetUserId = user.Id;
+                    userInfo.AspNetUser = user;
                     _dbContext.Users.Add(userInfo);
                     await _dbContext.SaveChangesAsync();
 
-                    return RedirectToAction(nameof(Index));
+                    return RedirectToAction(nameof(AllUsers));
                 }
                 else
                 {

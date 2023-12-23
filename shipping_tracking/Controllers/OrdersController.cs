@@ -39,7 +39,17 @@ namespace shipping_tracking.Controllers
             }
 
             var user = await _userManager.GetUserAsync(User);
-           
+
+            // Check if all order items satisfy their quantity in the database
+            foreach (var item in orderItems)
+            {
+                var product = _context.Products.FirstOrDefault(p => p.ProductID == item.ProductId);
+                if (product == null || item.Quantity > product.StockQuantity)
+                {
+                    return Json(new { success = false, message = "The quantity for one or more items is more than we have in stock." });
+                }
+            }
+
             int userId = -1;
             var userInfo = _context.Users.Where(u => u.AspNetUserId == user.Id).FirstOrDefault();
 
@@ -47,11 +57,7 @@ namespace shipping_tracking.Controllers
             {
                 return Json(new { success = false, message = "An error happend. Please try again later..." });
             }
-
-            if (userId == -1)
-            {
-                return Json(new { success = false, message = "An error happend. Please try again later..." });
-            }
+            userId = userInfo.Id;
 
             var order = new Order
             {
@@ -69,15 +75,23 @@ namespace shipping_tracking.Controllers
 
             foreach (var item in orderItems)
             {
-                var orderItem = new OrderItem
+                var product = _context.Products.FirstOrDefault(p => p.ProductID == item.ProductId);
+                if (product != null)
                 {
-                    OrderID = newOrderId,
-                    ProductID = item.ProductId,
-                    Quantity = item.Quantity,
-                    Price = item.ProductPrice,
-                    IsDeleted = false
-                };
-                _context.OrderItems.Add(orderItem);
+                    // Update stock quantity
+                    product.StockQuantity -= item.Quantity;
+
+                    // Add order item
+                    var orderItem = new OrderItem
+                    {
+                        OrderID = newOrderId,
+                        ProductID = item.ProductId,
+                        Quantity = item.Quantity,
+                        Price = item.ProductPrice,
+                        IsDeleted = false
+                    };
+                    _context.OrderItems.Add(orderItem);
+                }
             }
 
             var payment = new Payment

@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
@@ -23,6 +24,26 @@ builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
 .AddEntityFrameworkStores<MyDbContext>()
 .AddDefaultTokenProviders();
 
+// Register Session services
+builder.Services.AddSession(options =>
+{
+    // If the 20 minutes end without any action in the page the user will log out.
+    options.IdleTimeout = TimeSpan.FromMinutes(20);
+    // need to read more about the lines below ...
+    options.Cookie.HttpOnly = true;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
+});
+
+// Add SessionStateTempDataProvider
+builder.Services.AddControllersWithViews().AddSessionStateTempDataProvider();
+
+// Configure Authentication
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Home/Error"; // or create page for "/Account/AccessDenied";
+    });
 
 // Services & Repositories
 builder.Services.AddScoped<IPasswordService, PasswordService>();
@@ -41,6 +62,25 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+// Use the session middleware
+app.UseSession();
+
+//// Check for session validity and redirect
+//app.Use(async (context, next) =>
+//{
+//    if (!context.Session.Keys.Contains("UserName")
+//        && !context.Request.Path.StartsWithSegments("/Account/Login")
+//        && !context.Request.Path.StartsWithSegments("/Account/Register")
+//        && !context.Request.Path.StartsWithSegments("/Account/Logout")
+//        && !context.Request.Path.StartsWithSegments("/Home/HomePage"))
+//    {
+//        context.Response.Redirect("/Account/Logout");
+//        return;
+//    }
+
+//    await next.Invoke();
+//});
 
 app.UseAuthentication();
 app.UseAuthorization();

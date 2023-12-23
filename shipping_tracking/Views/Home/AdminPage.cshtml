@@ -1,1 +1,73 @@
-﻿<h1>This is the dashboard for the admin page</h1>
+﻿
+<style>
+    .team-card {
+        margin-top: 2rem;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+        .team-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .team-card img {
+            width: 100%;
+            height: auto;
+            border-top-left-radius: calc(0.25rem - 1px);
+            border-top-right-radius: calc(0.25rem - 1px);
+        }
+
+    .team-card-body {
+        padding: 1.25rem;
+        text-align: center;
+    }
+
+    .team-card-title {
+        margin-top: 1rem;
+        font-size: 1.25rem;
+        font-weight: bold;
+    }
+</style>
+
+<div class="container">
+    <div class="row">
+
+        <!-- Team member card 1 -->
+        <div class="col-md-4">
+            <a href="/Category/All" style="text-decoration: none; color: inherit;">
+                <div class="card team-card">
+                    <img src="~/assets/catigory.png" alt="catigory" class="card-img-top">
+                    <div class="card-body team-card-body">
+                        <h5 class="card-title team-card-title">Categories</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Team member card 1 -->
+        <!-- Team member card 2 -->
+        <div class="col-md-4">
+            <a href="/Product/All" style="text-decoration: none; color: inherit;">
+                <div class="card team-card">
+                    <img src="~/assets/Products.png" alt="Products" class="card-img-top">
+                    <div class="card-body team-card-body">
+                        <h5 class="card-title team-card-title">Products</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Team member card 2 -->
+        <!-- Team member card 3 -->
+        <div class="col-md-4">
+            <a href="/User/All" style="text-decoration: none; color: inherit;">
+                <div class="card team-card">
+                    <img src="~/assets/Users.png" alt="Users" class="card-img-top">
+                    <div class="card-body team-card-body">
+                        <h5 class="card-title team-card-title">Users</h5>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <!-- Team member card 3 -->
+
+    </div>
+</div>

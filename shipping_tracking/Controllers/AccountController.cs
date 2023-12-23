@@ -52,6 +52,8 @@ namespace shipping_tracking.Controllers
 
                         await _signInManager.RefreshSignInAsync(user);
                         TempData["LoginSuccess"] = $"Welcome Back {user.UserName}";
+                        // Store a string in the session: (to activate the session)
+                        HttpContext.Session.SetString("UserName", "Ali");
                         return RedirectToAction("HomePage", "Home");
                     }
                     else if (result.IsLockedOut)
@@ -124,6 +126,7 @@ namespace shipping_tracking.Controllers
 
                     // Save additional user info
                     userInfo.AspNetUserId = user.Id;
+                    userInfo.AspNetUser = user;
                     _context.Users.Add(userInfo);
                     await _context.SaveChangesAsync();
 
@@ -152,7 +155,13 @@ namespace shipping_tracking.Controllers
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
+            if (User.Identity.IsAuthenticated)
+            {
+                await _signInManager.SignOutAsync();
+                // Clear the session
+                HttpContext.Session.Clear();
+            }
+            
             return RedirectToAction("HomePage", "Home");
         }
     }

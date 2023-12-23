@@ -54,6 +54,7 @@
                         <div class="card-body team-card-body">
                             <p class="card-title team-card-title">
                                 ProductName: @product.ProductName <br>
+                                Stock Quantity: @product.StockQuantity <br>
                                 Price: @product.Price <br>
                                 Description: @product.Description
                             </p>
@@ -103,6 +104,7 @@
                     .then(data => {
                         if (data.success) {
                             Swal.fire('Success!', data.message, 'success');
+                            window.location.href = "/Home/HomePage";
                         } else {
                             Swal.fire('Error!', data.message, 'error');
                         }
