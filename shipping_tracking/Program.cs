@@ -9,7 +9,11 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("myconn") ?? throw new InvalidOperationException("Connection string 'myconn' not found.");
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews(
+    options =>
+    {
+        options.ModelBindingMessageProvider.SetValueMustNotBeNullAccessor(_ => "This field is required");
+    });
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation();
 
@@ -18,7 +22,8 @@ var configuration = provider.GetRequiredService<IConfiguration>();
 builder.Services.AddDbContext<MyDbContext>(item => item.UseSqlServer(configuration.GetConnectionString("myconn")));
 
 // Identity Managers
-builder.Services.AddIdentity<IdentityUser, IdentityRole>(options => {
+builder.Services.AddIdentity<IdentityUser, IdentityRole>(options =>
+{
     options.SignIn.RequireConfirmedAccount = false; // to avoid the email confirmation ...
 })
 .AddEntityFrameworkStores<MyDbContext>()
