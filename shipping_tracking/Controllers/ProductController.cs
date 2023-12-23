@@ -223,7 +223,7 @@ namespace shipping_tracking.Controllers
         [HttpPost("Update/{id}")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> UpdateProduct(int id, ProductCategoriesViewModel viewModel)
-        {
+        {            // need to handel the unexist img
             try
             {
                 var categories = await _dbContext.Categories
@@ -235,6 +235,8 @@ namespace shipping_tracking.Controllers
                 {
                     TempData["ExceptionError"] = "An error occurred while getting all categories.";
                 }
+
+                viewModel.Categories = categories;
 
                 // check if the product name is already exist
                 var existingProductName = await _dbContext.Products
