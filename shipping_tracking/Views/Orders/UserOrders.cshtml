@@ -1,0 +1,58 @@
+﻿<div class="row mt-4">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Total Price</th>
+                <th>Order Status</th>
+                <th>Created On</th>
+                <th>Options</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+
+@section Scripts {
+    <!-- In the <head> section of your layout -->
+    <link rel="stylesheet" href="~/lib/datatable/dataTables.bootstrap4.min.css" />
+
+    <!-- Before the closing </body> tag in your layout -->
+    <script src="~/lib/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatable/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            var counter = 1; // Row counter
+
+            $('.table').DataTable({
+                ajax: {
+                    url: '/api/Cart/Get',
+                    dataSrc: ''
+                },
+                columns: [
+                    {
+                        data: null,
+                        render: function (data, type, row, meta) {
+                            return counter++;
+                        }
+                    },
+                    { data: 'totalPrice' },
+                    { data: 'orderStatus' },
+                    { data: 'createdOn' },
+                    {
+                        data: 'orderID',
+                        render: function (data, type, row) {
+                            return `<button class="btn btn-danger js-delete" data-order-id="${data}"> Cancel </button>
+                                                    <button class="btn btn-info js-info" data-order-id="${data}"> Info </button>`;
+                        }
+                    }
+                ],
+                destroy: true,
+                order: [[3, "desc"]]
+            });
+        });
+    </script>
+
+}

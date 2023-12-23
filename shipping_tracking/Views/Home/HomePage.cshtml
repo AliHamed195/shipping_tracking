@@ -12,6 +12,7 @@
     <title>UI Frameworks Page</title>
     <link href="~/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="~/css/sweetalert2.min.css" />
+    <link rel="stylesheet" href="~/lib/fontawesome/all.min.css" />
 
     <style>
         .jumbotron-1, .jumbotron-2 {
@@ -193,6 +194,15 @@
                 {
                     <li class="nav-item"><a class="nav-link" asp-action="AdminPage" asp-controller="Home">Admin Page</a></li>
                 }
+                @if (User.IsInRole("Customer"))
+                {
+                    <li class="nav-item">
+                        <a class="nav-link" asp-action="UserOrders" asp-controller="Orders">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                            My Orders
+                        </a>
+                    </li>
+                }
             </ul>
         </div>
 
@@ -326,6 +336,7 @@
     <script src="~/js/jquery-3.5.1.slim.min.js"></script>
     <script src="~/js/bootstrap.min.js"></script>
     <script src="~/js/sweetalert2.min.js"></script>
+    <script src="~/lib/fontawesome/all.min.js"></script>
 </body>
 </html>
 

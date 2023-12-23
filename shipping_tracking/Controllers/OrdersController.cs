@@ -123,6 +123,12 @@ namespace shipping_tracking.Controllers
             return Json(new { success = true, message = "Order created successfully ..." });
         }
 
+        [HttpGet("MyOrders")]
+        public IActionResult UserOrders()
+        {
+            return View();
+        }
+
         private async Task<string> GetUserShippingAddress(int userId)
         {
             var user = await _context.Users.FindAsync(userId);
