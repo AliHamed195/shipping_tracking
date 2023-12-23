@@ -49,13 +49,46 @@
 
     <div class="collapse navbar-collapse" id="navbarContent">
         <ul class="navbar-nav mr-auto">
-            <li class="nav-item"><a class="nav-link" asp-action="HomePage" asp-controller="Home">Home</a></li>
+            <li class="nav-item"><a class="nav-link" asp-action="HomePage" asp-controller="Home">
+                    <i class="fa-solid fa-house"></i>
+                    Home
+                </a>
+            </li>
             @if (User.IsInRole("Admin"))
             {
-                <li class="nav-item"><a class="nav-link" asp-action="AdminPage" asp-controller="Home">Admin Page</a></li>
-                <li class="nav-item"><a class="nav-link" asp-action="All" asp-controller="Category">Category</a></li>
-                <li class="nav-item"><a class="nav-link" asp-action="All" asp-controller="Product">Product</a></li>
-                <li class="nav-item"><a class="nav-link" asp-action="All" asp-controller="User">User</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="AdminPage" asp-controller="Home">
+                        <i class="fa-solid fa-screwdriver-wrench"></i>
+                        Admin Page
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="All" asp-controller="Category">
+                        <i class="fa-solid fa-list"></i>
+                        Category
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="All" asp-controller="Product">
+                        <i class="fa-brands fa-product-hunt"></i>
+                        Product
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="All" asp-controller="User">
+                        <i class="fa-solid fa-users"></i>
+                        User
+                    </a>
+                </li>
+            }
+            @if (User.IsInRole("Customer"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link" asp-action="UserOrders" asp-controller="Orders">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                        My Orders
+                    </a>
+                </li>
             }
         </ul>
     </div>
@@ -64,7 +97,10 @@
         @if (User.Identity.IsAuthenticated)
         {
             <form asp-action="Logout" asp-controller="Account" method="post">
-                <button type="submit" class="btn btn-outline-primary">Logout</button>
+                <button type="submit" class="btn btn-outline-primary">
+                    <i class="fa-solid fa-right-from-bracket"></i>
+                    Logout
+                </button>
             </form>
         }
     </div>
