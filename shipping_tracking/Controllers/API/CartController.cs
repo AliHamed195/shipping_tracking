@@ -12,6 +12,10 @@ namespace shipping_tracking.Controllers.API
     [Authorize(Roles = "Customer, Admin, Employee")]
     public class CartController : ControllerBase
     {
+
+        /// <summary>
+        /// In my project there is no delete action. insted there is isDeleted(PUT)
+        /// </summary>
         private readonly MyDbContext _dbContext;
         private readonly UserManager<IdentityUser> _userManager;
 
@@ -21,7 +25,7 @@ namespace shipping_tracking.Controllers.API
             _userManager = userManager;
         }
 
-        [HttpGet("Get")]
+        [HttpGet("Get")] // Get All
         public async Task<IActionResult> GetUserOrders()
         {
             if (!User.Identity.IsAuthenticated)
@@ -53,7 +57,7 @@ namespace shipping_tracking.Controllers.API
         }
 
 
-        [HttpGet("GetInfo/{id}")]
+        [HttpGet("GetInfo/{id}")] // Get One By User Id
         public async Task<IActionResult> GetUserOrderInfo(int id)
         {
             if (!User.Identity.IsAuthenticated)
@@ -133,7 +137,7 @@ namespace shipping_tracking.Controllers.API
         }
 
 
-        [HttpPut("Cancel/{id}")]
+        [HttpPut("Cancel/{id}")] // Delete(PUT "isDeleted") Action
         public async Task<IActionResult> DeleteOrder(int id)
         {
             if (!User.Identity.IsAuthenticated)
