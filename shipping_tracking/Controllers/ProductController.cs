@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
 using shipping_tracking.Models.ViewModels;
@@ -29,6 +30,7 @@ namespace shipping_tracking.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("All")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllProducts()
         {
             try
@@ -55,6 +57,7 @@ namespace shipping_tracking.Controllers
         /// </summary>
         /// <returns></returns>
         [HttpGet("Create")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateProduct()
         {
             try
@@ -93,6 +96,7 @@ namespace shipping_tracking.Controllers
         /// <returns></returns>
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateProduct(ProductCategoriesViewModel viewModel)
         {
             try
@@ -171,6 +175,7 @@ namespace shipping_tracking.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("Update/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id)
         {
             try
@@ -222,6 +227,7 @@ namespace shipping_tracking.Controllers
         /// <returns></returns>
         [HttpPost("Update/{id}")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateProduct(int id, ProductCategoriesViewModel viewModel)
         {            // need to handel the unexist img
             try
@@ -340,6 +346,7 @@ namespace shipping_tracking.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpGet("Details/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> DetailsProduct(int id)
         {
 
@@ -373,6 +380,7 @@ namespace shipping_tracking.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [HttpPost("Delete/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<JsonResult> DeleteProduct(int id)
         {
             try
@@ -407,6 +415,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpGet("Category/{id}")]
+        [Authorize(Roles = "Customer, Admin, Employee")]
         public async Task<IActionResult> GetProductsForCategory(int id)
         {
             try

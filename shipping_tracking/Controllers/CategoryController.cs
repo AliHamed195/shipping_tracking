@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
 
 namespace shipping_tracking.Controllers
 {
     [Route("/Category")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : Controller
     {
         private readonly MyDbContext _dbContext;

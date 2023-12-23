@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -27,6 +28,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpGet("All")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> AllUsers()
         {
             var users = await _dbContext.Users
@@ -40,6 +42,7 @@ namespace shipping_tracking.Controllers
 
 
         [HttpGet("Create")]
+        [Authorize(Roles = "Admin")]
         public IActionResult CreateUser()
         {
             var roles = _roleManager.Roles.ToList();
@@ -51,6 +54,7 @@ namespace shipping_tracking.Controllers
 
         [HttpPost("Create")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> CreateUser(UserInfo userInfo, string roleName, string password)
         {
             // TODO: ====================================
@@ -112,6 +116,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpGet("Update/{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -135,6 +140,7 @@ namespace shipping_tracking.Controllers
 
         [HttpPost("Update/{id}")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateUser(string id, UserInfo userInfo, string roleName)
         {
             try

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -24,6 +25,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpGet("Login")]
+        [AllowAnonymous]
         public IActionResult Login()
         {
             return View();
@@ -31,6 +33,7 @@ namespace shipping_tracking.Controllers
 
         [HttpPost("Login")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(string email, string password)
         {
             try
@@ -82,6 +85,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpGet("Register")]
+        [AllowAnonymous]
         public IActionResult Register()
         {
             var roles = _roleManager.Roles.ToList();
@@ -93,6 +97,7 @@ namespace shipping_tracking.Controllers
 
         [HttpPost("Register")]
         [ValidateAntiForgeryToken]
+        [AllowAnonymous]
         public async Task<IActionResult> Register(UserInfo userInfo, string roleName, string password)
         {
             // TODO: ====================================
@@ -153,6 +158,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Customer, Admin, Employee")]
         public async Task<IActionResult> Logout()
         {
             if (User.Identity.IsAuthenticated)

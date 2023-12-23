@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using shipping_tracking.Models;
 using System.Diagnostics;
 
@@ -15,12 +16,14 @@ namespace shipping_tracking.Controllers
             _dbContext = dbContext;
         }
 
+        [AllowAnonymous]
         public IActionResult HomePage()
         {
             var categories = _dbContext.Categories.ToList();
             return View(categories);
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult AdminPage()
         {
             return View();

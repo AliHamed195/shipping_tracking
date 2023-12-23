@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -25,6 +26,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpPost("SubmitOrder")]
+        [Authorize(Roles = "Customer")]
         public async Task<IActionResult> SubmitOrder([FromBody] List<OrderItemViewModel> orderItems)
         {
             var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier);
@@ -124,6 +126,7 @@ namespace shipping_tracking.Controllers
         }
 
         [HttpGet("MyOrders")]
+        [Authorize(Roles = "Customer")]
         public IActionResult UserOrders()
         {
             return View();

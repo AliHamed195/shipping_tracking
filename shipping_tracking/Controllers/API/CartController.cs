@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using shipping_tracking.Models;
@@ -8,6 +9,7 @@ namespace shipping_tracking.Controllers.API
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles = "Customer, Admin, Employee")]
     public class CartController : ControllerBase
     {
         private readonly MyDbContext _dbContext;
