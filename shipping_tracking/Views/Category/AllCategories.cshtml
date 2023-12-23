@@ -1,36 +1,29 @@
 ﻿@model IEnumerable<shipping_tracking.Models.Category>
 
-<h1>Categories</h1>
+<div class="row mt-3 mb-4">
+    <div class="col-md-2">
+        <a class="btn btn-outline-primary" asp-action="Create">Create New</a>
+    </div>
+</div>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Name
-            </th>
-            <th>
-                Description
-            </th>
-            <th></th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr id="category-row-@item.CategoryID">
+                <td>@item.CategoryName</td>
+                <td>@item.Description</td>
                 <td>
-                    @item.CategoryName
-                </td>
-                <td>
-                    @item.Description
-                </td>
-                <td>
-                    <a asp-action="UpdateCategory" asp-route-id="@item.CategoryID">Edit</a> |
-                    <a asp-action="DetailsCategory" asp-route-id="@item.CategoryID">Details</a> |
-                    <a onclick="deleteCategory(@item.CategoryID)">Delete</a>
+                    <a class="btn btn-secondary btn-sm" asp-action="UpdateCategory" asp-route-id="@item.CategoryID">Edit</a> 
+                    <a class="btn btn-info btn-sm" asp-action="DetailsCategory" asp-route-id="@item.CategoryID">Details</a> 
+                    <a class="btn btn-danger btn-sm" onclick="deleteCategory(@item.CategoryID)">Delete</a>
 
                 </td>
             </tr>
@@ -38,82 +31,103 @@
     </tbody>
 </table>
 
-@if (TempData["successMessage"] != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                position: 'top-end',
-                title: 'Done...',
-                text: '@TempData["successMessage"]',
-                icon: 'success',
-                showConfirmButton: false,
-                timer: 2000
+@section Scripts {
+    <!-- In the <head> section of your layout -->
+    <link rel="stylesheet" href="~/lib/datatable/dataTables.bootstrap4.min.css" />
+
+    <!-- Before the closing </body> tag in your layout -->
+    <script src="~/lib/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/lib/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="~/lib/datatable/popper.min.js"></script>
+
+
+    @if (TempData["successMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Done...',
+                    text: '@TempData["successMessage"]',
+                    icon: 'success',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             });
-        });
 
-        @TempData["successMessage"] = null;
-    </script>
-}
+            @TempData["successMessage"] = null;
+        </script>
+    }
 
-@if (TempData["ErrorMessage"] != null)
-{
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            Swal.fire({
-                position: 'top-end',
-                title: 'Oops!!'
-                text: '@TempData["ErrorMessage"]',
-                icon: 'error',
-                showConfirmButton: false,
-                timer: 2000
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                Swal.fire({
+                    position: 'top-end',
+                    title: 'Oops!!'
+                                                                        text: '@TempData["ErrorMessage"]',
+                    icon: 'error',
+                    showConfirmButton: false,
+                    timer: 2000
+                });
             });
+
+            @TempData["ErrorMessage"] = null;
+        </script>
+    }
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
         });
-
-        @TempData["ErrorMessage"] = null;
     </script>
-}
 
-<script>
-    function deleteCategory(id) {
-        Swal.fire({
-            title: 'Are you sure?',
-            text: 'You will not be able to recover this category!',
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'Yes, delete it!'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                $.ajax({
-                    url: '/Category/Delete/' + id,
-                    type: 'POST',
-                    success: function (response) {
-                        if (response.success) {
-                            $('#category-row-' + id).remove();
-                            Swal.fire(
-                                'Deleted!',
-                                'Your category has been deleted.',
-                                'success'
-                            );
-                        } else {
+
+    <script>
+        function deleteCategory(id) {
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'You will not be able to recover this category!',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '/Category/Delete/' + id,
+                        type: 'POST',
+                        success: function (response) {
+                            if (response.success) {
+                                $('#category-row-' + id).remove();
+                                Swal.fire(
+                                    'Deleted!',
+                                    'Your category has been deleted.',
+                                    'success'
+                                );
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    response.message,
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
                             Swal.fire(
                                 'Error!',
-                                response.message,
+                                'An error occurred while deleting the category.',
                                 'error'
                             );
                         }
-                    },
-                    error: function (xhr, ajaxOptions, thrownError) {
-                        Swal.fire(
-                            'Error!',
-                            'An error occurred while deleting the category.',
-                            'error'
-                        );
-                    }
-                });
-            }
-        });
-    }
-</script>
+                    });
+                }
+            });
+        }
+    </script>
+
+}
+
+
