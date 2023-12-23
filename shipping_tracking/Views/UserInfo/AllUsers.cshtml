@@ -1,8 +1,10 @@
 ﻿@model IEnumerable<shipping_tracking.Models.UserInfo>
 
-<h2>User List</h2>
-
-<a class="btn btn-primary" href="/User/Create">Create</a>
+<div class="row mt-3 mb-4">
+    <div class="col-md-2">
+        <a class="btn btn-outline-primary" href="/User/Create">Create New</a>
+    </div>
+</div>
 
 <table class="table">
     <thead>
@@ -21,10 +23,26 @@
                 <td>@user.AspNetUser.Email</td>
                 <td>@user.Address</td>
                 <td>
-                    <a href="/User/Update/@user.AspNetUserId">Edit</a> |
-                    <a href="/User/Delete/@user.AspNetUserId">Delete</a>
+                    <a class="btn btn-secondary btn-sm" href="/User/Update/@user.AspNetUserId">Edit</a>
+                    <a class="btn btn-danger btn-sm" href="/User/Delete/@user.AspNetUserId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
+@section Scripts {
+    <!-- In the <head> section of your layout -->
+    <link rel="stylesheet" href="~/lib/datatable/dataTables.bootstrap4.min.css" />
+
+    <!-- Before the closing </body> tag in your layout -->
+    <script src="~/lib/datatable/jquery.dataTables.min.js"></script>
+
+    <script src="~/lib/datatable/dataTables.bootstrap4.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+}
