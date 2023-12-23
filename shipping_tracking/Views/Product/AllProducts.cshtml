@@ -1,58 +1,35 @@
 ﻿@model IEnumerable<shipping_tracking.Models.Product>
 
-@{
-    ViewData["Title"] = "AllProducts";
-}
+<div class="row mt-3 mb-4">
+    <div class="col-md-2">
+        <a class="btn btn-outline-primary" asp-action="Create">Create New</a>
+    </div>
+</div>
 
-<h1>All Products</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
-            <th>
-                Product Name
-            </th>
-            <th>
-                Description
-            </th>
-            <th>
-                Price
-            </th>
-            <th>
-                Stock Quantity
-            </th>
-            <th>
-                Category
-            </th>
-            <th></th>
+            <th>Product Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Stock Quantity</th>
+            <th>Category</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model)
         {
             <tr id="product-row-@item.ProductID">
+                <td>@item.ProductName</td>
+                <td>@item.Description</td>
+                <td>@item.Price</td>
+                <td>@item.StockQuantity</td>
+                <td>@item.Category?.CategoryName</td>
                 <td>
-                    @item.ProductName
-                </td>
-                <td>
-                    @item.Description
-                </td>
-                <td>
-                    @item.Price
-                </td>
-                <td>
-                    @item.StockQuantity
-                </td>
-                <td>
-                    @item.Category.CategoryName
-                </td>
-                <td>
-                    <a asp-action="UpdateProduct" asp-route-id="@item.ProductID">Edit</a> |
-                    <a asp-action="DetailsProduct" asp-route-id="@item.ProductID">Details</a> |
-                    <a onclick="deleteProduct(@item.ProductID)">Delete</a>
+                    <a class="btn btn-secondary btn-sm" asp-action="UpdateProduct" asp-route-id="@item.ProductID">Edit</a>
+                    <a class="btn btn-info btn-sm" asp-action="DetailsProduct" asp-route-id="@item.ProductID">Details</a>
+                    <a class="btn btn-danger btn-sm" onclick="deleteProduct(@item.ProductID)">Delete</a>
                 </td>
             </tr>
         }
@@ -61,6 +38,13 @@
 
 
 @section Scripts {
+    <!-- In the <head> section of your layout -->
+    <link rel="stylesheet" href="~/lib/datatable/dataTables.bootstrap4.min.css" />
+
+    <!-- Before the closing </body> tag in your layout -->
+    <script src="~/lib/datatable/jquery.dataTables.min.js"></script>
+
+    <script src="~/lib/datatable/dataTables.bootstrap4.min.js"></script>
     @if (TempData["successMessage"] != null)
     {
         <script>
@@ -86,7 +70,7 @@
                 Swal.fire({
                     position: 'top-end',
                     title: 'Oops!!'
-                                                    text: '@TempData["ErrorMessage"]',
+                    text: '@TempData["ErrorMessage"]',
                     icon: 'error',
                     showConfirmButton: false,
                     timer: 2000
@@ -96,6 +80,13 @@
             @TempData["ErrorMessage"] = null;
         </script>
     }
+
+    <script>
+        $(document).ready(function () {
+            $('.table').DataTable();
+        });
+    </script>
+
 
     <script>
         function deleteProduct(id) {

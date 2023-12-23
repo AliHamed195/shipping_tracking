@@ -38,7 +38,6 @@
     <!-- Before the closing </body> tag in your layout -->
     <script src="~/lib/datatable/jquery.dataTables.min.js"></script>
     <script src="~/lib/datatable/dataTables.bootstrap4.min.js"></script>
-    <script src="~/lib/datatable/popper.min.js"></script>
 
 
     @if (TempData["successMessage"] != null)
@@ -66,7 +65,7 @@
                 Swal.fire({
                     position: 'top-end',
                     title: 'Oops!!'
-                                                                        text: '@TempData["ErrorMessage"]',
+                    text: '@TempData["ErrorMessage"]',
                     icon: 'error',
                     showConfirmButton: false,
                     timer: 2000
