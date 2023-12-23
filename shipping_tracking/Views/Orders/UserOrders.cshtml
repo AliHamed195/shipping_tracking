@@ -57,6 +57,7 @@
                 order: [[3, "desc"]]
             });
 
+
             $('.table').on('click', '.js-delete', function () {
                 var button = $(this);
                 var id = button.data('order-id');
@@ -95,6 +96,80 @@
                     }
                 });
             });
+
+
+            $('.table').on('click', '.js-info', function () {
+                var button = $(this);
+                var id = button.data('order-id');
+
+                $.ajax({
+                    url: '/api/Cart/GetInfo/' + id,
+                    method: 'GET',
+                    success: function (orderInfo) {
+                        Swal.fire({
+                            title: 'Order Details',
+                            html: formatOrderInfo(orderInfo),
+                            width: '90%', 
+                            customClass: {
+                                container: 'swal-wide' 
+                            }
+                        });
+                    },
+                    error: function () {
+                        Swal.fire(
+                            'Error!',
+                            'An error occurred while fetching the order details.',
+                            'error'
+                        );
+                    }
+                });
+            });
+
+            function formatOrderInfo(orderInfo) {
+                var html = '<div style="display: flex; justify-content: space-between;">';
+
+                // Left column for order details and payment
+                html += '<div style="flex: 1; margin-right: 10px;">';
+                html += '<h4 style="color: #007bff;">Order Details</h4>';
+                html += '<p><strong>Order ID:</strong> ' + orderInfo.orderDetailsViewModel.orderID + '</p>';
+                html += '<p><strong>Total Price:</strong> ' + orderInfo.orderDetailsViewModel.totalPrice.toFixed(2) + '</p>';
+                html += '<p><strong>Order Status:</strong> ' + orderInfo.orderDetailsViewModel.orderStatus + '</p>';
+                html += '<p><strong>Created On:</strong> ' + new Date(orderInfo.orderDetailsViewModel.createdOn).toLocaleString() + '</p>';
+
+                if (orderInfo.paymentViewModel) {
+                    html += '<h4 style="color: #007bff; margin-top: 20px;">Payment Details</h4>';
+                    html += '<p><strong>Method:</strong> ' + orderInfo.paymentViewModel.paymentMethod + '</p>';
+                    html += '<p><strong>Status:</strong> ' + orderInfo.paymentViewModel.paymentStatus + '</p>';
+                    html += '<p><strong>Transaction ID:</strong> ' + orderInfo.paymentViewModel.transactionID + '</p>';
+                }
+                html += '</div>';
+
+                // Right column for order items and shipping
+                html += '<div style="flex: 1; margin-left: 10px;">';
+                if (orderInfo.orderItemViewModel && orderInfo.orderItemViewModel.length > 0) {
+                    html += '<h4 style="color: #007bff;">Order Items</h4>';
+                    orderInfo.orderItemViewModel.forEach(function (item) {
+                        html += '<p>' + item.quantity + ' x ' + item.productId + ' (Price: ' + item.productPrice.toFixed(2) + ')</p>';
+                    });
+                }
+
+                if (orderInfo.shippingViewModel) {
+                    html += '<h4 style="color: #007bff; margin-top: 20px;">Shipping Details</h4>';
+                    html += '<p><strong>Address:</strong> ' + orderInfo.shippingViewModel.shippingAddress + '</p>';
+                    html += '<p><strong>Status:</strong> ' + orderInfo.shippingViewModel.shippingStatus + '</p>';
+                    html += '<p><strong>Tracking Number:</strong> ' + orderInfo.shippingViewModel.shippingTrackingNumber + '</p>';
+                    if (orderInfo.shippingViewModel.estimatedDeliveryDate) {
+                        html += '<p><strong>Estimated Delivery:</strong> ' + new Date(orderInfo.shippingViewModel.estimatedDeliveryDate).toLocaleDateString() + '</p>';
+                    }
+                }
+                html += '</div>';
+
+                html += '</div>';
+                return html;
+            }
+
+
+
         });
     </script>
 
