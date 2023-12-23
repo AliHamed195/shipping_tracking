@@ -1,0 +1,67 @@
+﻿@{
+    Layout = null;
+}
+
+<style>
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid black;
+    }
+
+    .small-toggler .navbar-toggler-icon {
+        background-size: 0.75em 0.75em;
+    }
+
+    .navbar-nav .nav-item .nav-link:hover, .navbar-brand:hover {
+        color: #009BDF !important;
+        text-decoration: none;
+    }
+
+    .account-btns button:hover {
+        background-color: #005cbf;
+        color: #fff;
+    }
+
+    .account-btns button {
+        background: none;
+        border: 1px solid #005cbf;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        color: #005cbf;
+        transition: color 0.2s, background-color 0.2s;
+        margin-right: 10px;
+    }
+
+</style>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <button class="navbar-toggler small-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <a class="navbar-brand" href="#">Ali Online</a>
+
+    <div class="collapse navbar-collapse" id="navbarContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" asp-action="HomePage" asp-controller="Home">Home</a></li>
+            @if (User.IsInRole("Admin"))
+            {
+                <li class="nav-item"><a class="nav-link" asp-action="AdminPage" asp-controller="Home">Admin Page</a></li>
+                <li class="nav-item"><a class="nav-link" asp-action="All" asp-controller="Category">Category</a></li>
+                <li class="nav-item"><a class="nav-link" asp-action="All" asp-controller="Product">Product</a></li>
+                <li class="nav-item"><a class="nav-link" asp-action="All" asp-controller="User">User</a></li>
+            }
+        </ul>
+    </div>
+
+    <div class="account-btns">
+        @if (User.Identity.IsAuthenticated)
+        {
+            <form asp-action="Logout" asp-controller="Account" method="post">
+                <button type="submit" class="btn btn-outline-primary">Logout</button>
+            </form>
+        }
+    </div>
+</nav>

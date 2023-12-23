@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="~/shipping_tracking.styles.css" asp-append-version="true" />
 </head>
 <body>
-   
+    @await Html.PartialAsync("_Navbar")
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
@@ -26,6 +26,9 @@
     <script src="~/js/sweetalert2.min.js"></script>
     <script src="~/js/fontawesome.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/bootstrap.min.js"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
