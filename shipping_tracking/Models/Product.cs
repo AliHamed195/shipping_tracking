@@ -26,6 +26,7 @@ namespace shipping_tracking.Models
         [Display(Name = "Stock Quantity")]
         public int StockQuantity { get; set; }
 
+        [Required(ErrorMessage = "Product Image is required.")]
         [Display(Name = "Product Image")]
         public string imagePath { get; set; }
 
